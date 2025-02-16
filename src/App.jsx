@@ -1,14 +1,13 @@
-import config from "./config/config";
 import { useEffect, useState } from "react";
 import authService from "./appwrite/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { login, logout } from "./store/authSlice";
 import { Footer, Header } from "./components";
+import { Outlet } from "react-router-dom";
 
 function App() {
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
-  const kipu = useSelector((state) => state.auth.userData);
   useEffect(() => {
     authService
       .getCurrentUser()
@@ -19,7 +18,7 @@ function App() {
           dispatch(logout());
         }
       })
-      .catch((err) => console.log("error at authentication"))
+      // .catch((error) => console.log("error at authentication", error))
       .finally(() => setLoading(false));
   }, []);
 
@@ -31,13 +30,12 @@ function App() {
     );
   }
 
-  //! tailwind not working
-
   return (
     <>
       <Header />
       <main>
         <h1 className="bg-slate-300 text-red-800 ">helllow</h1>
+        <Outlet />
       </main>
       <Footer />
     </>
