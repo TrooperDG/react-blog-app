@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { login, logout } from "./store/authSlice";
 import { Footer, Header } from "./components";
 import { Outlet } from "react-router-dom";
+import RTE from "./components/utils/RTE";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -36,6 +37,7 @@ function App() {
       <main>
         <h1 className="bg-slate-300 text-red-800 ">helllow</h1>
         <Outlet />
+        <RTE />
       </main>
       <Footer />
     </>
