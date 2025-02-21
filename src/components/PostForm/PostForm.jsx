@@ -1,31 +1,46 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import databaseService from "../../appwrite/database";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { RTE, Input, Select, Button, Loading } from "../index";
+import imageCompression from "browser-image-compression";
 
 function PostForm({ post }) {
+  const [isUploading, setIsUploading] = useState(false);
   const { register, handleSubmit, watch, control, setValue, getValues } =
     useForm({
       defaultValues: {
         title: post?.title || "",
-        slug: post?.content || "",
+        slug: post?.$id || "",
+        content: post?.content || "",
         status: post?.status || "active",
         featuredImage: post?.featuredImage || "",
       },
     });
 
   const navigate = useNavigate();
-  const userData = useSelector((state) => state.auth.useData);
+  const userData = useSelector((state) => state.auth.userData);
 
   async function submit(data) {
+    setIsUploading(true);
+    const compressedBlob = await imageCompression(data.image[0], {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 800,
+      useWebWorker: true, // Using web worker for better performance
+    });
+    const compressedFile = new File([compressedBlob], data.image[0].name, {
+      type: compressedBlob.type,
+      lastModified: Date.now(),
+    });
+
     if (post) {
       const uploadedFile = data.image[0]
-        ? databaseService.uploadFile(data.image[0])
+        ? await databaseService.uploadFile(data.image[0])
         : null;
 
       if (uploadedFile) {
-        databaseService.deleteFile(post.image);
+        await databaseService.deleteFile(post.featuredImage);
       }
 
       const updatedPost = await databaseService.updatePost(post.$id, {
@@ -36,10 +51,10 @@ function PostForm({ post }) {
         navigate(`/post/${updatedPost.$id}`);
       }
     } else {
-      const uploadedFile = data.image[0]
-        ? databaseService.uploadFile(data.image[0])
+      const uploadedFile = compressedFile
+        ? await databaseService.uploadFile(compressedFile)
         : null;
-
+      // console.log(uploadedFile, data.image[0]);
       if (uploadedFile) {
         data.featuredImage = uploadedFile.$id;
       }
@@ -49,6 +64,8 @@ function PostForm({ post }) {
         userId: userData.$id,
       });
     }
+    setIsUploading(false);
+    navigate("/");
   }
 
   function slugMaker(value) {
@@ -56,7 +73,7 @@ function PostForm({ post }) {
       return value
         .trim()
         .toLowerCase()
-        .replace(/^[a-z\d]+/g, "_");
+        .replace(/[^a-z\d]+/g, "_");
     }
     return "";
   }
@@ -106,13 +123,13 @@ function PostForm({ post }) {
           type="file"
           className="mb-4"
           accept="image/png, image/jpg, image/jpeg, image/gif"
-          {...register("image", { required: !post })}
+          {...register("image")}
           //!something is wrong
         />
         {post && (
           <div className="w-full mb-4">
             <img
-              src={appwriteService.getFilePreview(post.featuredImage)}
+              src={databaseService.getFilePreview(post.featuredImage)}
               alt={post.title}
               className="rounded-lg"
             />
@@ -127,11 +144,19 @@ function PostForm({ post }) {
         />
         <Button
           type="submit"
-          bgColor={post ? "bg-green-500" : undefined}
+          bgColor={isUploading ? "bg-blue-800" : "bg-blue-600"}
           className="w-full"
+          disabled={isUploading}
         >
-          {post ? "Update" : "Submit"}
+          {post
+            ? isUploading
+              ? "Updating..."
+              : "Update"
+            : isUploading
+            ? "Submitting..."
+            : "Submit"}
         </Button>
+        {isUploading ? <Loading /> : null}
       </div>
     </form>
   );

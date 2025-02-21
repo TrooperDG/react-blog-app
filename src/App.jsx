@@ -2,31 +2,32 @@ import { useEffect, useState } from "react";
 import authService from "./appwrite/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { login, logout } from "./store/authSlice";
-import { Footer, Header } from "./components";
+import { Footer, Header, Loading } from "./components";
 import { Outlet } from "react-router-dom";
-import RTE from "./components/utils/RTE";
 
 function App() {
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
+
   useEffect(() => {
     authService
       .getCurrentUser()
       .then((userData) => {
         if (userData) {
           dispatch(login(userData));
+          // console.log(userData);
         } else {
           dispatch(logout());
         }
       })
-      // .catch((error) => console.log("error at authentication", error))
+      .catch((error) => console.log("Guest access"))
       .finally(() => setLoading(false));
   }, []);
 
   if (loading) {
     return (
       <>
-        <h1>Loading...</h1>
+        <Loading />
       </>
     );
   }
@@ -34,10 +35,8 @@ function App() {
   return (
     <>
       <Header />
-      <main>
-        <h1 className="bg-slate-300 text-red-800 ">helllow</h1>
+      <main className="mt-12">
         <Outlet />
-        <RTE />
       </main>
       <Footer />
     </>

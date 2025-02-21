@@ -1,5 +1,5 @@
 import config from "../config/config";
-import { Client, Databases, Storage, ID } from "appwrite";
+import { Client, Databases, Storage, ID, Query } from "appwrite";
 
 export class DatabaseService {
   client = new Client();
@@ -117,8 +117,9 @@ export class DatabaseService {
         ID.unique(),
         file
       );
+      return result;
     } catch (error) {
-      onsole.log("Appwrite service :: uploadFile :: error ", error);
+      console.log("Appwrite service :: uploadFile :: error ", error);
     }
   }
   async deleteFile(fileId) {
@@ -129,7 +130,7 @@ export class DatabaseService {
       );
       return result;
     } catch (error) {
-      onsole.log("Appwrite service :: deleteFile :: error ", error);
+      console.log("Appwrite service :: deleteFile :: error ", error);
     }
   }
 
@@ -141,7 +142,7 @@ export class DatabaseService {
       );
       return result;
     } catch (error) {
-      onsole.log("Appwrite service :: deleteFile :: error ", error);
+      console.log("Appwrite service :: deleteFile :: error ", error);
     }
   }
 }

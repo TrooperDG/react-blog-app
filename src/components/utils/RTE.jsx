@@ -42,21 +42,9 @@ function RTE({ name, label, control, defaultValue = "" }) {
                 "anchor",
               ],
               toolbar:
-                "undo redo | blocks | image | bold italic forecolor | alignleft aligncenter bold italic forecolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent |removeformat | help",
+                "undo redo | blocks | bold italic underline forecolor| fontsize  fontfamily  | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent |removeformat | image  | help",
               content_style:
                 "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
-              //? setup function to prevent user from adding more than one image
-              setup: function (editor) {
-                editor.on("BeforeSetContent", function (e) {
-                  e;
-                  if (e.content.includes("<img")) {
-                    const images = editor.dom.select("img");
-                    if (images.length > 0) {
-                      editor.dom.remove(images[0]);
-                    }
-                  }
-                });
-              },
             }}
             onEditorChange={onChange}
           />

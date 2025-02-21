@@ -10,14 +10,56 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
-import { Signup, Login } from "./components/index.js";
+import { Signup, Login, Protected, Loading } from "./components/index.js";
+import { AllPosts, EditPost, Home, LoginPage, Post, SignupPage } from "./pages";
+import AddPost from "./pages/AddPost.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
-      <Route path="" element={<h1>helkkloo</h1>} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
+      <Route path="" element={<Home />} />
+      <Route
+        path="/login"
+        element={
+          <Protected authentication={false}>
+            <LoginPage />
+          </Protected>
+        }
+      />
+      <Route
+        path="/signup"
+        element={
+          <Protected authentication={false}>
+            <SignupPage />
+          </Protected>
+        }
+      />
+      <Route
+        path="/all-posts"
+        element={
+          <Protected authentication={true}>
+            <AllPosts />
+          </Protected>
+        }
+      />
+      <Route
+        path="/add-post"
+        element={
+          <Protected authentication={true}>
+            <AddPost />
+          </Protected>
+        }
+      />
+      <Route
+        path="/edit-post/:slug"
+        element={
+          <Protected authentication={true}>
+            <EditPost />
+          </Protected>
+        }
+      />
+      <Route path="/post/:slug" element={<Post />} />
+      <Route path="/loding" element={<Loading />} />
     </Route>
   )
 );
