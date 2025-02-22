@@ -7,6 +7,12 @@
       }
     },
     {
+      "src": "/(.*\\.css)",
+      "headers": {
+        "Content-Type": "text/css"
+      }
+    },
+    {
       "src": "/.*",
       "dest": "/index.html"
     }
