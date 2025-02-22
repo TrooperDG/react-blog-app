@@ -24,8 +24,8 @@ function Header() {
       active: !authStatus,
     },
     {
-      name: "All Posts",
-      path: "/all-posts",
+      name: "My Posts",
+      path: "/my-posts",
       active: authStatus,
     },
     {

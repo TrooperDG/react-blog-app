@@ -4,7 +4,7 @@ import { Container, Loading, PostCard } from "../components";
 import { useSelector } from "react-redux";
 import { Query } from "appwrite";
 
-function AllPosts() {
+function MyPosts() {
   const [allPosts, setAllPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const userData = useSelector((state) => state.auth.userData);
@@ -32,7 +32,7 @@ function AllPosts() {
       <Container>
         <div className="flex flex-wrap">
           {allPosts.map((post) => (
-            <div key={post.$id} className="p-2 w-1/4">
+            <div key={post.$id} className="p-2 w-1/3">
               <PostCard {...post} />
             </div>
           ))}
@@ -42,4 +42,4 @@ function AllPosts() {
   );
 }
 
-export default AllPosts;
+export default MyPosts;

@@ -10,8 +10,8 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
-import { Signup, Login, Protected, Loading } from "./components/index.js";
-import { AllPosts, EditPost, Home, LoginPage, Post, SignupPage } from "./pages";
+import { Protected, Loading } from "./components/index.js";
+import { MyPosts, EditPost, Home, LoginPage, Post, SignupPage } from "./pages";
 import AddPost from "./pages/AddPost.jsx";
 
 const router = createBrowserRouter(
@@ -35,10 +35,10 @@ const router = createBrowserRouter(
         }
       />
       <Route
-        path="/all-posts"
+        path="/my-posts"
         element={
           <Protected authentication={true}>
-            <AllPosts />
+            <MyPosts />
           </Protected>
         }
       />
