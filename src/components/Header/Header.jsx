@@ -35,7 +35,7 @@ function Header() {
     },
   ];
   return (
-    <header className="py-3 shadow fixed top-0 left-0 right-0 z-20 bg-gray-700">
+    <header className="py-3 shadow-black/30 shadow-lg fixed top-0 left-0 right-0 z-20 bg-slate-800 ">
       <Container>
         <nav className="flex">
           <div className="mr-4  ">
