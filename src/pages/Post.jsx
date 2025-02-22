@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import databaseService from "../appwrite/database";
 import { useSelector } from "react-redux";
-import { Container, Button } from "../components";
+import { Container, Button, Loading } from "../components";
 import parse from "html-react-parser";
 
 function Post() {
   const { slug } = useParams();
   const navigate = useNavigate();
   const [post, setPost] = useState(null);
+  const [loading, setLoading] = useState(true);
   const userData = useSelector((state) => state.auth.userData);
 
   const isAuthor = post && userData ? post.userId === userData.$id : false;
@@ -25,6 +26,7 @@ function Post() {
     } else {
       navigate("/");
     }
+    setLoading(false);
   }, [slug]);
 
   function deletePost() {
@@ -36,6 +38,7 @@ function Post() {
     });
   }
 
+  if (loading) return <Loading />;
   return post ? (
     <div className="py-8">
       <Container>
@@ -60,9 +63,9 @@ function Post() {
           )}
         </div>
         <div className="w-full mb-6">
-          <h1 className="text-2xl font-bold">{post.title}</h1>
+          <h1 className="text-2xl font-bold text-blue-500">{post.title}</h1>
         </div>
-        <div className="browser-css">{parse(post.content)}</div>
+        <div className="browser-css text-lg">{parse(post.content)}</div>
       </Container>
     </div>
   ) : null;

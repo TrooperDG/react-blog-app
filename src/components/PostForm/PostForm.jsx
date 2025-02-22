@@ -24,19 +24,24 @@ function PostForm({ post }) {
 
   async function submit(data) {
     setIsUploading(true);
-    const compressedBlob = await imageCompression(data.image[0], {
-      maxSizeMB: 1,
-      maxWidthOrHeight: 800,
-      useWebWorker: true, // Using web worker for better performance
-    });
-    const compressedFile = new File([compressedBlob], data.image[0].name, {
-      type: compressedBlob.type,
-      lastModified: Date.now(),
-    });
+    let compressedBlob = null;
+    let compressedFile = null;
+    if (data.image[0]) {
+      compressedBlob = await imageCompression(data.image[0], {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 800,
+        useWebWorker: true,
+      });
+
+      compressedFile = new File([compressedBlob], data.image[0].name, {
+        type: compressedBlob.type,
+        lastModified: Date.now(),
+      });
+    }
 
     if (post) {
-      const uploadedFile = data.image[0]
-        ? await databaseService.uploadFile(data.image[0])
+      const uploadedFile = compressedFile
+        ? await databaseService.uploadFile(compressedFile)
         : null;
 
       if (uploadedFile) {
@@ -51,10 +56,12 @@ function PostForm({ post }) {
         navigate(`/post/${updatedPost.$id}`);
       }
     } else {
+      //* for a new post
+
       const uploadedFile = compressedFile
         ? await databaseService.uploadFile(compressedFile)
         : null;
-      // console.log(uploadedFile, data.image[0]);
+
       if (uploadedFile) {
         data.featuredImage = uploadedFile.$id;
       }

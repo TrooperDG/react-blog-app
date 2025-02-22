@@ -137,7 +137,7 @@ function Footer() {
     //     </div>
     //   </div>
     // </section>
-    <div>hello ifootter</div>
+    <div className="mt-auto">hello ifootter</div>
   );
 }
 

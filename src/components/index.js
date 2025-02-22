@@ -13,6 +13,7 @@ import PostForm from "./PostForm/PostForm";
 import Protected from "./AuthLayout";
 import RTE from "./utils/RTE";
 import Loading from "./utils/Loding";
+import UserLogo from "./Header/UserLogo";
 
 export {
   Header,
@@ -30,4 +31,5 @@ export {
   Protected,
   RTE,
   Loading,
+  UserLogo,
 };

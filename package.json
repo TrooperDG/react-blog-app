@@ -16,6 +16,7 @@
     "appwrite": "^17.0.0",
     "browser-image-compression": "^2.0.2",
     "html-react-parser": "^5.2.2",
+    "jodit-react": "^5.2.15",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.2",
