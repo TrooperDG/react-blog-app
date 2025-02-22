@@ -5,5 +5,15 @@ import EditPost from "./EditPost";
 import MyPosts from "./MyPosts";
 import LoginPage from "./LoginPage";
 import SignupPage from "./SignupPage";
+import NotFound from "./NotFound";
 
-export { Home, Addpost, Post, EditPost, MyPosts, LoginPage, SignupPage };
+export {
+  Home,
+  Addpost,
+  Post,
+  EditPost,
+  MyPosts,
+  LoginPage,
+  SignupPage,
+  NotFound,
+};

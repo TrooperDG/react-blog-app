@@ -69,7 +69,7 @@ function Signup() {
               })}
             />
             <Input
-              label="Email"
+              label="password"
               type="password"
               placeholder="Enter your password"
               {...register("password", {

@@ -61,7 +61,7 @@ function Login() {
               })}
             />
             <Input
-              label="Email"
+              label="password"
               placeholder="Enter your password"
               type="password"
               {...register("password", {
