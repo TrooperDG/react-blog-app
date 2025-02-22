@@ -30,9 +30,12 @@ function MyPosts() {
   return (
     <div className="w-full py-8">
       <Container>
-        <div className="flex flex-wrap">
+        <div className="flex justify-center flex-wrap">
           {allPosts.map((post) => (
-            <div key={post.$id} className="p-2 w-1/3">
+            <div
+              key={post.$id}
+              className="p-2 w-full max-w-lg md:w-1/2 lg:w-1/3"
+            >
               <PostCard {...post} />
             </div>
           ))}
