@@ -25,42 +25,6 @@ function RTE({ name, label, control, defaultValue = "" }) {
         name={name || "content"}
         control={control}
         render={({ field: { onChange } }) => (
-          // <Editor
-          //   apiKey={config.tinyMCEAPIKey}
-          //   initialValue={defaultValue}
-          //   init={{
-          //     initialValue: defaultValue,
-          //     height: 500,
-          //     menubar: true,
-          //     plugins: [
-          //       "image",
-          //       "advlist",
-          //       "autolink",
-          //       "lists",
-          //       "link",
-          //       "image",
-          //       "charmap",
-          //       "preview",
-          //       "anchor",
-          //       "searchreplace",
-          //       "visualblocks",
-          //       "code",
-          //       "fullscreen",
-          //       "insertdatetime",
-          //       "media",
-          //       "table",
-          //       "code",
-          //       "help",
-          //       "wordcount",
-          //       "anchor",
-          //     ],
-          //     toolbar:
-          //       "undo redo | blocks | bold italic underline forecolor| fontsize  fontfamily  | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent |removeformat | image  | help",
-          //     content_style:
-          //       "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
-          //   }}
-          //   onEditorChange={onChange}
-          // />
           <JoditEditor
             // ref={ref}
             value={defaultValue}
