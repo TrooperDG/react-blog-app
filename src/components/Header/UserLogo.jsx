@@ -8,8 +8,9 @@ function UserLogo({ userAvatar = "" }) {
   const authStatus = useSelector((state) => state.auth.status);
   let userName = userData && userData.name;
   const navigate = useNavigate();
-  if (userData && userData.name.length > 8) {
-    userName = userData.name.substring(0, 6) + "...";
+  if (userData) {
+    if (userData.name.length > 8)
+      userName = userData.name.substring(0, 6) + "...";
   }
   // const navRefMobile = useRef(null);
   const navRef = useRef(null);
