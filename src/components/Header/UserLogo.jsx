@@ -11,14 +11,7 @@ function UserLogo({ userAvatar = "" }) {
   if (userData && userData.name.length > 8) {
     userName = userData.name.substring(0, 6) + "...";
   }
-
-  function handleNavigate() {
-    if (userData) {
-      navigate("/");
-    } else {
-      navigate("/login");
-    }
-  }
+  // const navRefMobile = useRef(null);
   const navRef = useRef(null);
   const accountItems = [
     {
@@ -43,8 +36,31 @@ function UserLogo({ userAvatar = "" }) {
     },
   ];
 
+  function handleNavigate() {
+    if (userData) {
+      navigate("/");
+    } else {
+      navigate("/login");
+    }
+  }
+
+  function handleOpenUserBar() {
+    if (window.innerWidth >= 768) {
+      if (navRef.current.style.display == "inline-block") {
+        navRef.current.style.display = "none";
+      } else {
+        navRef.current.style.display = "inline-block";
+      }
+    } else {
+      navRef.current.style.right = "0px";
+    }
+  }
+  function handleCloseUserBar() {
+    navRef.current.style.right = "-12.5rem";
+  }
+
   return (
-    <div className="flex align-middle cursor-pointer">
+    <div className="flex align-middle cursor-pointer relative ">
       <div className="text-white mr-2">
         <p className="text-sm font-bold">Hello!</p>
         <p
@@ -54,10 +70,7 @@ function UserLogo({ userAvatar = "" }) {
           {userName ? userName : "Sign in"}
         </p>
       </div>
-      <div
-        onClick={() => (navRef.current.style.right = "0vw")}
-        className="w-10 h-10 rounded-full "
-      >
+      <div onClick={handleOpenUserBar} className="w-10 h-10 rounded-full ">
         {userAvatar ? (
           <img
             src={"../../../public/close.svg"}
@@ -70,16 +83,63 @@ function UserLogo({ userAvatar = "" }) {
           />
         )}
       </div>
-      {/* =============== user aacount ====================== */}
+      {/* =============== user account ====================== */}
 
-      <ul
+      {/* <ul
         ref={navRef}
-        className="fixed  py-3 bg-slate-700 duration-150 top-0 h-screen w-1/2  md:hidden"
-        style={{ right: "0vw" }}
+        className="py-3 pb-5 absolute bg-slate-600 overflow-hidden duration-150 top-13 right-0 hidden  w-50  "
+        // style={{ display: "none" }}
       >
         <li className="flex justify-end">
           <button
-            onClick={() => (navRef.current.style.right = "-55vw")}
+            onClick={handleCloseUserBar}
+            className="text-white  inline-block px-4 py-2 mb-2 hover:bg-slate-500  active:bg-slate-600 "
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="32px"
+              viewBox="0 -960 960 960"
+              width="32px"
+              fill="#e8eaed"
+            >
+              <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+            </svg>
+          </button>
+        </li>
+
+        {accountItems.map((item) =>
+          item.active ? (
+            <li
+              key={item.name}
+              className=" duration-200 hover:bg-blue-200  hover:text-gray-800 hover:pl-0.5  text-white active:bg-blue-200 "
+            >
+              <button
+                onClick={() => navigate(item.path)}
+                className=" text-lg px-6 py-2 "
+              >
+                {item.name}
+              </button>
+            </li>
+          ) : null
+        )}
+        {authStatus && (
+          <>
+            <li className=" duration-200 hover:bg-blue-200  hover:text-gray-800 hover:pl-0.5  text-white active:bg-blue-200">
+              <LogoutBtn className="text-lg px-6 py-2" />
+            </li>
+          </>
+        )}
+      </ul> */}
+
+      {/*=========================== for mobile view=========================*/}
+      <ul
+        ref={navRef}
+        className="fixed inline-block  py-3 bg-slate-700 duration-150 top-0 -right-50 h-screen w-50  md:hidden md:absolute md:top-13 md:right-0 md:w-50 md:h-auto md:pb-4 md:rounded-b-lg"
+        // style={{ right: "-55vw" }}
+      >
+        <li className="flex justify-end md:hidden">
+          <button
+            onClick={handleCloseUserBar}
             className="text-white  inline-block px-4 py-2 mb-2 active:bg-slate-600"
           >
             <svg
