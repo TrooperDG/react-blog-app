@@ -73,12 +73,12 @@ function UserLogo({ userAvatar = "" }) {
       <div onClick={handleOpenUserBar} className="w-10 h-10 rounded-full ">
         {userAvatar ? (
           <img
-            src={"../../../public/close.svg"}
+            src={userAvatar}
             className="w-full h-full rounded-full outline-2 outline-white  object-cover"
           />
         ) : (
           <img
-            src={"../../../public/user.svg"}
+            src={"user.svg"}
             className="w-full h-full rounded-full   object-cover"
           />
         )}
