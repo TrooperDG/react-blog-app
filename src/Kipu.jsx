@@ -105,3 +105,13 @@ export default BlogCard;
 //     </button>
 //   </div>
 // </div>;
+
+// if (isSidebar) {
+//   // navRef.current.style.display = "none";
+//   navRef.current.style.left = "-55vw";
+//   setIsSIdeBar((prev) => !prev);
+// } else {
+//   // navRef.current.style.display = "block";
+//   navRef.current.style.left = "0px";
+//   setIsSIdeBar((prev) => !prev);
+// }
