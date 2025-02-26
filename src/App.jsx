@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { login, logout } from "./store/authSlice";
 import { Footer, Header, Loading } from "./components";
 import { Outlet } from "react-router-dom";
-import { addUserDetails } from "./store/userSlice";
+import { addUserDetails, removeUserDetails } from "./store/userSlice";
 import databaseService from "./appwrite/database";
 
 function App() {
@@ -38,6 +38,7 @@ function App() {
           });
         } else {
           dispatch(logout());
+          dispatch(removeUserDetails());
         }
       })
       .finally(() => setLoading(false));

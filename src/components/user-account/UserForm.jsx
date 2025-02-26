@@ -10,16 +10,15 @@ import { Input, Button, Loading } from "../index";
 function UserForm({ userDetails }) {
   const [isUploading, setIsUploading] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
-
   const dispatch = useDispatch();
   const { register, handleSubmit } = useForm({
     defaultValues: {
       username: userDetails?.username || "",
       address: userDetails?.address || "",
-      DOB: userDetails?.DOB.split("T")[0] || "2025-02-13",
+      DOB: userDetails?.DOB || "",
       bio: userDetails?.bio || "",
       phone: userDetails?.phone || "",
-      avatar: userDetails?.avatar || "user.svg",
+      avatar: userDetails?.avatar || "",
     },
   });
   const navigate = useNavigate();
@@ -30,7 +29,7 @@ function UserForm({ userDetails }) {
     if (data.image[0]) {
       compressedBlob = await imageCompression(data.image[0], {
         maxSizeMB: 1,
-        maxWidthOrHeight: 800,
+        maxWidthOrHeight: 400,
         useWebWorker: true,
       });
       compressedFile = new File([compressedBlob], data.image[0].name, {
