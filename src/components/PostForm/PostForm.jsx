@@ -8,16 +8,14 @@ import imageCompression from "browser-image-compression";
 
 function PostForm({ post }) {
   const [isUploading, setIsUploading] = useState(false);
-  const { register, handleSubmit, watch, control, setValue, getValues } =
-    useForm({
-      defaultValues: {
-        title: post?.title || "",
-        slug: post?.$id || "",
-        content: post?.content || "",
-        status: post?.status || "active",
-        featuredImage: post?.featuredImage || "",
-      },
-    });
+  const { register, handleSubmit, control, getValues } = useForm({
+    defaultValues: {
+      title: post?.title || "",
+      content: post?.content || "",
+      status: post?.status || "active",
+      featuredImage: post?.featuredImage || "",
+    },
+  });
 
   const navigate = useNavigate();
   const userData = useSelector((state) => state.auth.userData);
@@ -48,10 +46,12 @@ function PostForm({ post }) {
         await databaseService.deleteFile(post.featuredImage);
       }
 
+      delete data.image; // deleting unnecessary  image[] array (fileInput)
       const updatedPost = await databaseService.updatePost(post.$id, {
         ...data,
         featuredImage: uploadedFile ? uploadedFile.$id : post.featuredImage,
       });
+
       if (updatedPost) {
         navigate(`/post/${updatedPost.$id}`);
       }
@@ -77,27 +77,27 @@ function PostForm({ post }) {
     setIsUploading(false);
   }
 
-  function slugMaker(value) {
-    if (value && typeof value === "string") {
-      return value
-        .trim()
-        .toLowerCase()
-        .replace(/[^a-z\d]+/g, "_");
-    }
-    return "";
-  }
+  // function slugMaker(value) {
+  //   if (value && typeof value === "string") {
+  //     return value
+  //       .trim()
+  //       .toLowerCase()
+  //       .replace(/[^a-z\d]+/g, "_");
+  //   }
+  //   return "";
+  // }
 
-  useEffect(() => {
-    const subscription = watch((value, { name }) => {
-      if (name === "title") {
-        setValue("slug", slugMaker(value.title), { shouldValidate: true });
-      }
-    });
+  // useEffect(() => {
+  //   const subscription = watch((value, { name }) => {
+  //     if (name === "title") {
+  //       setValue("slug", slugMaker(value.title), { shouldValidate: true });
+  //     }
+  //   });
 
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, [watch.title, slugMaker, setValue]);
+  //   return () => {
+  //     subscription.unsubscribe();
+  //   };
+  // }, [watch.title, slugMaker, setValue]);
 
   return (
     <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
@@ -108,7 +108,7 @@ function PostForm({ post }) {
           className="mb-4"
           {...register("title", { required: true })}
         />
-        <Input
+        {/* <Input
           label="Slug :"
           placeholder="Slug"
           className="mb-4"
@@ -118,7 +118,7 @@ function PostForm({ post }) {
               shouldValidate: true,
             });
           }}
-        />
+        /> */}
         <RTE
           label="Content :"
           name="content"

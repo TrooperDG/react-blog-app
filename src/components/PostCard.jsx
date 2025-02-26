@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import databaseService from "../appwrite/database";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaRegHeart, FaHeart, FaRegComment, FaShare } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { Query } from "appwrite";
@@ -17,37 +17,42 @@ function PostCard({
   const [creatorData, setCreatorData] = useState(null);
   const [postData, setPostData] = useState(null);
   const userDetails = useSelector((state) => state.user.userDetails);
+  const navigate = useNavigate();
+
   async function fetchData() {
+    const post = await databaseService.getPost($id, [
+      Query.select(["likedUserIds", "commentUserIds"]),
+    ]);
+    setPostData(post);
+
     if (userDetails) {
       const user = await databaseService.getUser(userId, [
         Query.select(["username", "avatar"]),
       ]);
       setCreatorData(user);
-
-      const post = await databaseService.getPost($id, [
-        Query.select(["likedUserIds", "commentUserIds"]),
-      ]);
-      setPostData(post);
-
       const likedIndex = post.likedUserIds.indexOf(userDetails.userId);
       if (likedIndex >= 0) setLiked(true);
     }
   }
 
   async function handleLike() {
-    setLiked((prev) => !prev);
-    //! need a debouncing here
-    let newLikedUserIds = postData.likedUserIds;
-    const likedIndex = postData.likedUserIds.indexOf(userDetails.userId);
-    if (likedIndex >= 0) {
-      newLikedUserIds = postData.likedUserIds.filter(
-        (_, index) => index !== likedIndex
-      );
+    if (userDetails) {
+      setLiked((prev) => !prev);
+      //! need a debouncing here
+      let newLikedUserIds = postData.likedUserIds;
+      const likedIndex = postData.likedUserIds.indexOf(userDetails.userId);
+      if (likedIndex >= 0) {
+        newLikedUserIds = postData.likedUserIds.filter(
+          (_, index) => index !== likedIndex
+        );
+      } else {
+        newLikedUserIds = [...postData.likedUserIds, userDetails.userId];
+      }
+      setPostData((prev) => ({ ...prev, likedUserIds: newLikedUserIds }));
+      await databaseService.updatePost($id, { likedUserIds: newLikedUserIds });
     } else {
-      newLikedUserIds = [...postData.likedUserIds, userDetails.userId];
+      navigate("/login");
     }
-    setPostData((prev) => ({ ...prev, likedUserIds: newLikedUserIds }));
-    await databaseService.updatePost($id, { likedUserIds: newLikedUserIds });
   }
 
   useEffect(() => {

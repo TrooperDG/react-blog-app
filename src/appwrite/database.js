@@ -16,12 +16,12 @@ export class DatabaseService {
   //! Post services ...
 
   //* here we are using slug as the unique Id:
-  async createPost({ title, content, slug, featuredImage, status, userId }) {
+  async createPost({ title, content, featuredImage, status, userId }) {
     try {
       const createdPost = await this.databases.createDocument(
         config.appwriteDatabaseId,
         config.appwriteArticlesCollectionId,
-        slug,
+        ID.unique(),
         {
           title,
           content,
@@ -36,12 +36,12 @@ export class DatabaseService {
     }
   }
 
-  async updatePost(slug, data) {
+  async updatePost(postId, data) {
     try {
       const updatedPost = await this.databases.updateDocument(
         config.appwriteDatabaseId,
         config.appwriteArticlesCollectionId,
-        slug,
+        postId,
         {
           ...data,
         }
@@ -52,12 +52,12 @@ export class DatabaseService {
     }
   }
 
-  async deletePost(slug) {
+  async deletePost(postId) {
     try {
       const deletedPost = await this.databases.deleteDocument(
         config.appwriteDatabaseId,
         config.appwriteArticlesCollectionId,
-        slug
+        postId
       );
       return deletedPost;
     } catch (error) {
@@ -65,12 +65,12 @@ export class DatabaseService {
     }
   }
 
-  async getPost(slug, queries = []) {
+  async getPost(postId, queries = []) {
     try {
       const post = await this.databases.getDocument(
         config.appwriteDatabaseId,
         config.appwriteArticlesCollectionId,
-        slug,
+        postId,
         queries
       );
       if (post) return post;
