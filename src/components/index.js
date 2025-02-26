@@ -15,6 +15,7 @@ import RTE from "./utils/RTE";
 import Loading from "./utils/Loding";
 import UserLogo from "./Header/UserLogo";
 import UserAccount from "./user-account/UserAccount";
+import UserForm from "./user-account/UserForm";
 
 export {
   Header,
@@ -34,4 +35,5 @@ export {
   Loading,
   UserLogo,
   UserAccount,
+  UserForm,
 };

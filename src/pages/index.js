@@ -7,6 +7,7 @@ import LoginPage from "./LoginPage";
 import SignupPage from "./SignupPage";
 import NotFound from "./NotFound";
 import MyAccountPage from "./MyAccountPage";
+import EditAccount from "./EditAccount";
 
 export {
   Home,
@@ -18,4 +19,5 @@ export {
   SignupPage,
   NotFound,
   MyAccountPage,
+  EditAccount,
 };

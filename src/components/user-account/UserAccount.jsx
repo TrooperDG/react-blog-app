@@ -1,7 +1,9 @@
 import React from "react";
+
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import databaseService from "../../appwrite/database";
+import Button from "../utils/Button";
 
 export default function UserAccount() {
   const userDetails = useSelector((state) => state.user.userDetails);
@@ -27,6 +29,9 @@ export default function UserAccount() {
             <h1 className="text-3xl font-bold text-gray-800">
               {userDetails.username}
             </h1>
+            <Link className="ml-auto" to="/edit-account">
+              <Button>Edit</Button>
+            </Link>
           </div>
 
           {/* Email */}
@@ -46,7 +51,9 @@ export default function UserAccount() {
             <h2 className="text-sm font-semibold text-gray-600">
               Date of Birth
             </h2>
-            <p className="text-lg text-gray-800">{userDetails.DOB}</p>
+            <p className="text-lg text-gray-800">
+              {userDetails.DOB.split("T")[0]}
+            </p>
           </div>
 
           {/* Bio */}
