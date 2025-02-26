@@ -1,7 +1,9 @@
 import React, { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Sidebar({ navItems = [], navRef }) {
   // const navRef = useRef(null);
+  const navigate = useNavigate();
 
   return (
     <ul

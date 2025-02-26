@@ -20,7 +20,7 @@ export class DatabaseService {
     try {
       const createdPost = await this.databases.createDocument(
         config.appwriteDatabaseId,
-        config.appwriteCollectionId,
+        config.appwriteArticlesCollectionId,
         slug,
         {
           title,
@@ -40,7 +40,7 @@ export class DatabaseService {
     try {
       const updatedPost = await this.databases.updateDocument(
         config.appwriteDatabaseId,
-        config.appwriteCollectionId,
+        config.appwriteArticlesCollectionId,
         slug,
         {
           title,
@@ -59,7 +59,7 @@ export class DatabaseService {
     try {
       const deletedPost = await this.databases.deleteDocument(
         config.appwriteDatabaseId,
-        config.appwriteCollectionId,
+        config.appwriteArticlesCollectionId,
         slug
       );
       return deletedPost;
@@ -72,7 +72,7 @@ export class DatabaseService {
     try {
       const post = await this.databases.getDocument(
         config.appwriteDatabaseId,
-        config.appwriteCollectionId,
+        config.appwriteArticlesCollectionId,
         slug
       );
       return post;
@@ -85,7 +85,7 @@ export class DatabaseService {
     try {
       const posts = await this.databases.listDocuments(
         config.appwriteDatabaseId,
-        config.appwriteCollectionId,
+        config.appwriteArticlesCollectionId,
         queries
       );
       return posts;
@@ -99,13 +99,103 @@ export class DatabaseService {
     try {
       const postList = await this.databases.listDocuments(
         config.appwriteDatabaseId,
-        config.appwriteCollectionId
+        config.appwriteArticlesCollectionId
       );
       return postList;
     } catch (error) {
       console.log("Appwrite service :: getAllPosts :: error ", error);
       return false;
     }
+  }
+
+  //!userInfo services...
+  async createUser({
+    username,
+    avatar,
+    userId,
+    bio,
+    myPosts,
+    likedPosts = [],
+    commentIds = [],
+    DOB,
+    userEmail,
+    address,
+    phone,
+  }) {
+    try {
+      const createduser = await this.databases.createDocument(
+        config.appwriteDatabaseId,
+        config.appwriteUsersCollectionId,
+        userId,
+        {
+          username,
+          avatar,
+          userId,
+          bio,
+          myPosts,
+          likedPosts,
+          commentIds,
+          DOB,
+          userEmail,
+          address,
+          phone,
+        }
+      );
+      return createduser;
+    } catch (error) {
+      console.log("Appwrite service :: createUser :: error ", error);
+    }
+  }
+
+  async updateUser(
+    userId,
+    {
+      username,
+      avatar,
+      bio,
+      myPosts,
+      likedPosts = [],
+      commentIds = [],
+      DOB,
+      address,
+      phone,
+    }
+  ) {
+    try {
+      const updatedUser = await this.databases.updateDocument(
+        config.appwriteDatabaseId,
+        config.appwriteUsersCollectionId,
+        userId,
+        {
+          username,
+          avatar,
+          bio,
+          myPosts,
+          likedPosts,
+          commentIds,
+          DOB,
+          address,
+          phone,
+        }
+      );
+      return updatedUser;
+    } catch (error) {
+      console.log("Appwrite service :: updateUser :: error ", error);
+    }
+  }
+
+  async getUser(userId) {
+    try {
+      const user = await this.databases.getDocument(
+        config.appwriteDatabaseId,
+        config.appwriteUsersCollectionId,
+        userId
+      );
+      if (user) return user;
+    } catch (error) {
+      console.log("Appwrite service :: getUser :: error ", error);
+    }
+    return null;
   }
 
   //! file services ...

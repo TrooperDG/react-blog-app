@@ -70,9 +70,11 @@ function PostForm({ post }) {
         ...data,
         userId: userData.$id,
       });
+      if (createdPost) {
+        navigate(`/post/${createdPost.$id}`);
+      }
     }
     setIsUploading(false);
-    navigate("/");
   }
 
   function slugMaker(value) {

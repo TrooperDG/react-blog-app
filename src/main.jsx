@@ -19,8 +19,10 @@ import {
   Post,
   SignupPage,
   NotFound,
+  MyAccountPage,
 } from "./pages";
 import AddPost from "./pages/AddPost.jsx";
+import UserForm from "./components/user-account/userForm.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -56,6 +58,22 @@ const router = createBrowserRouter(
           element={
             <Protected authentication={true}>
               <AddPost />
+            </Protected>
+          }
+        />
+        <Route
+          path="/my-account"
+          element={
+            <Protected authentication={true}>
+              <MyAccountPage />
+            </Protected>
+          }
+        />
+        <Route
+          path="/edit-account"
+          element={
+            <Protected authentication={true}>
+              <UserForm />
             </Protected>
           }
         />

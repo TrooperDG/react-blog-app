@@ -6,6 +6,8 @@ function Home() {
   const [allPosts, setAllPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // console.log(allPosts);
+
   useEffect(() => {
     databaseService
       .getPosts([])

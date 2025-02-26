@@ -4,13 +4,17 @@ import { useNavigate } from "react-router-dom";
 import LogoutBtn from "./LogoutBtn";
 
 function UserLogo({ userAvatar = "" }) {
-  const userData = useSelector((state) => state.auth.userData);
+  const userDetails = useSelector((state) => state.user.userDetails);
   const authStatus = useSelector((state) => state.auth.status);
-  let userName = userData && userData.name;
+
+  let userName = "User";
   const navigate = useNavigate();
-  if (userData) {
-    if (userData.name.length > 8)
-      userName = userData.name.substring(0, 6) + "...";
+  if (userDetails) {
+    if (userDetails.username) {
+      userDetails.username.length > 10
+        ? (userName = userDetails.username.substring(0, 8) + "...")
+        : (userName = userDetails.username);
+    }
   }
   // const navRefMobile = useRef(null);
   const navRef = useRef(null);
@@ -38,7 +42,7 @@ function UserLogo({ userAvatar = "" }) {
   ];
 
   function handleNavigate() {
-    if (userData) {
+    if (userDetails) {
       navigate("/");
     } else {
       navigate("/login");

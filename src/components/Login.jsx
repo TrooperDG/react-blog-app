@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { login as storeLogin } from "../store/authSlice";
+import { addUserDetails } from "../store/userSlice.js";
 import authService from "../appwrite/auth";
 import { useDispatch } from "react-redux";
 import { Logo, Input, Button } from "./index";
 import { useForm } from "react-hook-form";
+import databaseService from "../appwrite/database.js";
 
 function Login() {
   const [error, setError] = useState("");
@@ -17,9 +19,23 @@ function Login() {
     try {
       const session = await authService.login(data);
       if (session) {
-        const userdata = await authService.getCurrentUser();
-        if (userdata) {
-          dispatch(storeLogin(userdata));
+        const userData = await authService.getCurrentUser();
+        if (userData) {
+          dispatch(storeLogin(userData));
+          const existingUser = await databaseService.getUser(userData.$id);
+          if (existingUser) {
+            dispatch(addUserDetails(existingUser));
+          } else {
+            const userDetails = await databaseService.createUser({
+              userId: userData.$id,
+              userEmail: userData.email,
+              username: userData.name,
+            });
+            if (userDetails) {
+              dispatch(addUserDetails(userDetails));
+            }
+          }
+
           navigate("/");
         }
       }

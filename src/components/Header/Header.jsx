@@ -6,6 +6,8 @@ import Sidebar from "./Sidebar";
 
 function Header() {
   const authStatus = useSelector((state) => state.auth.status);
+  const userInfo = useSelector((state) => state.user.userDetails);
+
   const navRef = useRef(null);
 
   const navigate = useNavigate();

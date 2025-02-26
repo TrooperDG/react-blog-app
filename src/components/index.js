@@ -14,6 +14,7 @@ import Protected from "./AuthLayout";
 import RTE from "./utils/RTE";
 import Loading from "./utils/Loding";
 import UserLogo from "./Header/UserLogo";
+import UserAccount from "./user-account/UserAccount";
 
 export {
   Header,
@@ -32,4 +33,5 @@ export {
   RTE,
   Loading,
   UserLogo,
+  UserAccount,
 };

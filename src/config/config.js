@@ -5,7 +5,12 @@ const config = {
 
   appwriteDatabaseId: String(import.meta.env.VITE_APPWRITE_DATABASE_ID),
 
-  appwriteCollectionId: String(import.meta.env.VITE_APPWRITE_COLLECTION_ID),
+  appwriteArticlesCollectionId: String(
+    import.meta.env.VITE_APPWRITE_ARTICLES_COLLECTION_ID
+  ),
+  appwriteUsersCollectionId: String(
+    import.meta.env.VITE_APPWRITE_USERS_COLLECTION_ID
+  ),
 
   appwriteBucketId: String(import.meta.env.VITE_APPWRITE_BUCKET_ID),
 

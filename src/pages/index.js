@@ -6,6 +6,7 @@ import MyPosts from "./MyPosts";
 import LoginPage from "./LoginPage";
 import SignupPage from "./SignupPage";
 import NotFound from "./NotFound";
+import MyAccountPage from "./MyAccountPage";
 
 export {
   Home,
@@ -16,4 +17,5 @@ export {
   LoginPage,
   SignupPage,
   NotFound,
+  MyAccountPage,
 };

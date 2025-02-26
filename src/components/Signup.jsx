@@ -5,6 +5,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { Button, Input, Logo } from "./index";
 import { useForm } from "react-hook-form";
 import { login as storeLogin } from "../store/authSlice";
+import { addUserDetails } from "../store/userSlice.js";
 
 function Signup() {
   const [error, setError] = useState("");
@@ -20,6 +21,16 @@ function Signup() {
         const userData = await authService.getCurrentUser();
         if (userData) {
           dispatch(storeLogin(createdUser));
+
+          const userDetails = await databaseService.createUser({
+            userId: userData.$id,
+            userEmail: userData.email,
+            username: userData.name,
+          });
+          if (userDetails) {
+            dispatch(addUserDetails(userDetails));
+          }
+
           navigate("/");
         }
       }
