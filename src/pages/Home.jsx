@@ -7,6 +7,14 @@ function Home() {
   const [loading, setLoading] = useState(true);
 
   // console.log(allPosts);
+  function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+  const shuffledPosts = shuffleArray(allPosts);
 
   useEffect(() => {
     databaseService
@@ -30,7 +38,7 @@ function Home() {
     <div className="w-full  py-8">
       <Container>
         <div className="flex justify-center flex-wrap">
-          {allPosts.map((post) => (
+          {shuffledPosts.map((post) => (
             <div
               key={post.$id}
               className="p-2 w-full max-w-lg md:w-1/2 lg:w-1/3"
