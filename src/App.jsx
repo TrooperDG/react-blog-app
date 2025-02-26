@@ -19,6 +19,7 @@ function App() {
       .then((userData) => {
         if (userData) {
           dispatch(login(userData));
+          //* adding the User Details
           databaseService.getUser(userData.$id).then((existingUser) => {
             if (existingUser) {
               dispatch(addUserDetails(existingUser));

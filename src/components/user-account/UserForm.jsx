@@ -94,7 +94,7 @@ function UserForm({ userDetails }) {
                   ? imagePreview
                   : userDetails.avatar
                   ? databaseService.getFilePreview(userDetails.avatar)
-                  : "user.svg"
+                  : "/user.svg"
               }
               alt=""
             />
