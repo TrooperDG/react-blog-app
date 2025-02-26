@@ -36,17 +36,14 @@ export class DatabaseService {
     }
   }
 
-  async updatePost(slug, { title, content, featuredImage, status }) {
+  async updatePost(slug, data) {
     try {
       const updatedPost = await this.databases.updateDocument(
         config.appwriteDatabaseId,
         config.appwriteArticlesCollectionId,
         slug,
         {
-          title,
-          content,
-          featuredImage,
-          status,
+          ...data,
         }
       );
       return updatedPost;
@@ -68,17 +65,19 @@ export class DatabaseService {
     }
   }
 
-  async getPost(slug) {
+  async getPost(slug, queries = []) {
     try {
       const post = await this.databases.getDocument(
         config.appwriteDatabaseId,
         config.appwriteArticlesCollectionId,
-        slug
+        slug,
+        queries
       );
-      return post;
+      if (post) return post;
     } catch (error) {
       console.log("Appwrite service :: getPost :: error ", error);
     }
+    return null;
   }
 
   async getPosts(queries = [Query.equal("status", ["active"])]) {
@@ -184,12 +183,13 @@ export class DatabaseService {
     }
   }
 
-  async getUser(userId) {
+  async getUser(userId, queries = []) {
     try {
       const user = await this.databases.getDocument(
         config.appwriteDatabaseId,
         config.appwriteUsersCollectionId,
-        userId
+        userId,
+        queries
       );
       if (user) return user;
     } catch (error) {

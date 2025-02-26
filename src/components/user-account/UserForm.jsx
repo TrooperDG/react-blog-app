@@ -9,11 +9,8 @@ import { Input, Button, Loading } from "../index";
 
 function UserForm({ userDetails }) {
   const [isUploading, setIsUploading] = useState(false);
-  const [imagePreview, setImagePreview] = useState(
-    userDetails.avatar
-      ? databaseService.getFilePreview(userDetails.avatar)
-      : null
-  );
+  const [imagePreview, setImagePreview] = useState(null);
+
   const dispatch = useDispatch();
   const { register, handleSubmit } = useForm({
     defaultValues: {
@@ -106,6 +103,11 @@ function UserForm({ userDetails }) {
             {imagePreview ? (
               <img
                 src={imagePreview}
+                className=" w-20 h-20 object-cover rounded-full outline-2 outline-slate-700"
+              />
+            ) : userDetails.avatar ? (
+              <img
+                src={databaseService.getFilePreview(userDetails.avatar)}
                 className=" w-20 h-20 object-cover rounded-full outline-2 outline-slate-700"
               />
             ) : (
