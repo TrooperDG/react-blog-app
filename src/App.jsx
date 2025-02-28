@@ -6,6 +6,7 @@ import { Footer, Header, Loading } from "./components";
 import { Outlet } from "react-router-dom";
 import { addUserDetails, removeUserDetails } from "./store/userSlice";
 import databaseService from "./appwrite/database";
+import "./App.css";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -25,8 +26,7 @@ function App() {
               dispatch(addUserDetails(existingUser));
             } else {
               databaseService
-                .createUser({
-                  userId: userData.$id,
+                .createUser(userData.$id, {
                   userEmail: userData.email,
                   username: userData.name,
                 })

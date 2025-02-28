@@ -1,0 +1,9 @@
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #d6d6d6 #fdfdfd; /* thumb and track color */
+}
+
+/* Enable scrolling */
+.scrollable-content {
+  overflow: auto;
+}

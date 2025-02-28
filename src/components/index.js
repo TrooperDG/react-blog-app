@@ -16,6 +16,7 @@ import Loading from "./utils/Loding";
 import UserLogo from "./Header/UserLogo";
 import UserAccount from "./user-account/UserAccount";
 import UserForm from "./user-account/UserForm";
+import PostComments from "./Comments/PostComments";
 
 export {
   Header,
@@ -36,4 +37,5 @@ export {
   UserLogo,
   UserAccount,
   UserForm,
+  PostComments,
 };

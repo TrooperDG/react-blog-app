@@ -8,7 +8,7 @@ function UserLogo() {
   const userDetails = useSelector((state) => state.user.userDetails);
   const authStatus = useSelector((state) => state.auth.status);
 
-  let userName = "User";
+  let userName = "Sign in";
   const navigate = useNavigate();
   if (userDetails) {
     if (userDetails.username) {
@@ -73,7 +73,7 @@ function UserLogo() {
           onClick={handleNavigate}
           className="leading-4 hover:underline duration-200 "
         >
-          {userName ? userName : "Sign in"}
+          {userName}
         </p>
       </div>
       <div onClick={handleOpenUserBar} className="w-10 h-10 rounded-full ">

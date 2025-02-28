@@ -49,7 +49,12 @@ export class AuthService {
       return user;
     } catch (error) {
       // console.log("Appwrite service :: getCurrentUser :: error ", error);
-      console.log("Guest");
+      // console.log("Guest");
+      if (error.code === 401) {
+        console.log("User is not logged in.");
+      } else {
+        console.error("Error checking login status:", error);
+      }
     }
     return null;
   }

@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import databaseService from "../appwrite/database";
 import { Link, useNavigate } from "react-router-dom";
 import { FaRegHeart, FaHeart, FaRegComment, FaShare } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { addUserDetails } from "../store/userSlice";
 import { Query } from "appwrite";
+import { PostComments } from ".";
 
 function PostCard({
   $id,
@@ -15,41 +17,56 @@ function PostCard({
 }) {
   const [liked, setLiked] = useState(false);
   const [creatorData, setCreatorData] = useState(null);
-  const [postData, setPostData] = useState(null);
+  const [likeCount, setLikeCount] = useState(likedUserIds.length);
+  // const [commentUserIds, setCommentUserIds] = useState([]);
   const userDetails = useSelector((state) => state.user.userDetails);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   async function fetchData() {
-    const post = await databaseService.getPost($id, [
-      Query.select(["likedUserIds", "commentUserIds"]),
+    const user = await databaseService.getUser(userId, [
+      Query.select(["username", "avatar"]),
     ]);
-    setPostData(post);
+    setCreatorData(user);
 
     if (userDetails) {
-      const user = await databaseService.getUser(userId, [
-        Query.select(["username", "avatar"]),
-      ]);
-      setCreatorData(user);
-      const likedIndex = post.likedUserIds.indexOf(userDetails.userId);
+      const likedIndex = likedUserIds.indexOf(userDetails.$id);
       if (likedIndex >= 0) setLiked(true);
     }
   }
 
+  // console.log(likeCount, liked);
   async function handleLike() {
     if (userDetails) {
       setLiked((prev) => !prev);
       //! need a debouncing here
-      let newLikedUserIds = postData.likedUserIds;
-      const likedIndex = postData.likedUserIds.indexOf(userDetails.userId);
-      if (likedIndex >= 0) {
-        newLikedUserIds = postData.likedUserIds.filter(
-          (_, index) => index !== likedIndex
+      let newLikedUserIds = likedUserIds;
+      let newLikedPostIds = userDetails.likedPostIds;
+      if (liked) {
+        newLikedUserIds = likedUserIds.filter(
+          (userId) => userId !== userDetails.$id
+        );
+        newLikedPostIds = userDetails.likedPostIds.filter(
+          (postId) => postId !== $id
         );
       } else {
-        newLikedUserIds = [...postData.likedUserIds, userDetails.userId];
+        newLikedUserIds = [...likedUserIds, userDetails.$id];
+        newLikedPostIds = [...userDetails.likedPostIds, $id];
       }
-      setPostData((prev) => ({ ...prev, likedUserIds: newLikedUserIds }));
+      setLikeCount(newLikedUserIds.length);
+
       await databaseService.updatePost($id, { likedUserIds: newLikedUserIds });
+
+      //*updating user collection
+      await databaseService.updateUser(userDetails.$id, {
+        likedPostIds: newLikedPostIds,
+      });
+      dispatch(
+        addUserDetails({
+          ...userDetails,
+          likedPostIds: newLikedPostIds,
+        })
+      );
     } else {
       navigate("/login");
     }
@@ -67,7 +84,7 @@ function PostCard({
             {creatorData && creatorData.avatar ? (
               <img
                 src={databaseService.getFilePreview(creatorData.avatar)}
-                className="w-full h-full rounded-full  object-cover"
+                className="w-full h-full rounded-full  object-cover outline-2 outline-slate-400"
               />
             ) : (
               <svg
@@ -106,9 +123,7 @@ function PostCard({
             className="flex items-center gap-1 hover:text-red-500 transition"
             onClick={handleLike}
           >
-            {postData &&
-              postData.likedUserIds.length > 0 &&
-              postData.likedUserIds.length}
+            {likeCount > 0 ? likeCount : null}
             {liked ? <FaHeart className="text-red-500" /> : <FaRegHeart />}
             <span>Like</span>
           </button>
@@ -119,6 +134,8 @@ function PostCard({
             <FaShare /> <span>Share</span>
           </button>
         </div>
+
+        <PostComments currentPostId={$id} />
       </div>
     </>
   );

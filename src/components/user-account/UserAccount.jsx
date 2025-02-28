@@ -5,10 +5,10 @@ import Button from "../utils/Button";
 
 export default function UserAccount({ userDetails }) {
   return (
-    <div className="user-info-container px-6 py-10 md:shadow-2xl md:py-20   rounded-lg max-w-2xl mx-auto">
+    <div className="user-info-container px-6 py-10 md:shadow-2xl md:py-20   rounded-lg ">
       {userDetails && (
         <>
-          <div className="flex items-center space-x-4 mb-6">
+          <div className="flex flex-wrap items-center space-x-4 mb-6">
             {userDetails.avatar ? (
               <img
                 src={databaseService.getFilePreview(userDetails.avatar)}

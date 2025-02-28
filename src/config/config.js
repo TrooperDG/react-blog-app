@@ -11,6 +11,9 @@ const config = {
   appwriteUsersCollectionId: String(
     import.meta.env.VITE_APPWRITE_USERS_COLLECTION_ID
   ),
+  appwriteCommentsCollectionId: String(
+    import.meta.env.VITE_APPWRITE_COMMENTS_COLLECTION_ID
+  ),
 
   appwriteBucketId: String(import.meta.env.VITE_APPWRITE_BUCKET_ID),
 

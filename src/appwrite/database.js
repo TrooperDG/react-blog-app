@@ -108,36 +108,14 @@ export class DatabaseService {
   }
 
   //!userInfo services...
-  async createUser({
-    username,
-    avatar,
-    userId,
-    bio,
-    myPosts,
-    likedPosts = [],
-    commentIds = [],
-    DOB,
-    userEmail,
-    address,
-    phone,
-  }) {
+  async createUser(userId, data) {
     try {
       const createduser = await this.databases.createDocument(
         config.appwriteDatabaseId,
         config.appwriteUsersCollectionId,
         userId,
         {
-          username,
-          avatar,
-          userId,
-          bio,
-          myPosts,
-          likedPosts,
-          commentIds,
-          DOB,
-          userEmail,
-          address,
-          phone,
+          ...data,
         }
       );
       return createduser;
@@ -146,35 +124,14 @@ export class DatabaseService {
     }
   }
 
-  async updateUser(
-    userId,
-    {
-      username,
-      avatar,
-      bio,
-      myPosts,
-      likedPosts = [],
-      commentIds = [],
-      DOB,
-      address,
-      phone,
-    }
-  ) {
+  async updateUser(userId, data) {
     try {
       const updatedUser = await this.databases.updateDocument(
         config.appwriteDatabaseId,
         config.appwriteUsersCollectionId,
         userId,
         {
-          username,
-          avatar,
-          bio,
-          myPosts,
-          likedPosts,
-          commentIds,
-          DOB,
-          address,
-          phone,
+          ...data,
         }
       );
       return updatedUser;
@@ -196,6 +153,65 @@ export class DatabaseService {
       console.log("Appwrite service :: getUser :: error ", error);
     }
     return null;
+  }
+
+  //!Comment services
+
+  async createComment(data) {
+    try {
+      const createdComment = await this.databases.createDocument(
+        config.appwriteDatabaseId,
+        config.appwriteCommentsCollectionId,
+        ID.unique(),
+        {
+          ...data,
+        }
+      );
+      return createdComment;
+    } catch (error) {
+      console.log("Appwrite service :: createComment :: error ", error);
+    }
+  }
+
+  async getComments(queries = []) {
+    try {
+      const comments = await this.databases.listDocuments(
+        config.appwriteDatabaseId,
+        config.appwriteCommentsCollectionId,
+        queries
+      );
+      if (comments) return comments;
+    } catch (error) {
+      console.log("Appwrite service :: getComments :: error ", error);
+      return [];
+    }
+  }
+  async updateComment(commentId, data) {
+    try {
+      const updatedComment = await this.databases.updateDocument(
+        config.appwriteDatabaseId,
+        config.appwriteCommentsCollectionId,
+        commentId,
+        {
+          ...data,
+        }
+      );
+      return updatedComment;
+    } catch (error) {
+      console.log("Appwrite service :: updateComment:: error ", error);
+    }
+  }
+  async deleteComment(commentId) {
+    try {
+      const deletedComment = await this.databases.deleteDocument(
+        config.appwriteDatabaseId,
+        config.appwriteCommentsCollectionId,
+        commentId
+      );
+      return deletedComment;
+    } catch (error) {
+      console.log("Appwrite service :: deleteComment :: error ", error);
+    }
   }
 
   //! file services ...

@@ -22,8 +22,7 @@ function Signup() {
         if (userData) {
           dispatch(storeLogin(createdUser));
 
-          const userDetails = await databaseService.createUser({
-            userId: userData.$id,
+          const userDetails = await databaseService.createUser(userData.$id, {
             userEmail: userData.email,
             username: userData.name,
           });

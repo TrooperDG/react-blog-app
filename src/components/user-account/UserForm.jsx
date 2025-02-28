@@ -49,8 +49,8 @@ function UserForm({ userDetails }) {
       }
       data.avatar = uploadedFile.$id;
     }
-
-    const updatedUser = await databaseService.updateUser(userDetails.userId, {
+    delete data.image; // deleteing the unnecessary image[] (inputfile)
+    const updatedUser = await databaseService.updateUser(userDetails.$id, {
       ...data,
     });
 
@@ -69,37 +69,10 @@ function UserForm({ userDetails }) {
   }
 
   return (
-    <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
+    <form onSubmit={handleSubmit(submit)} className=" max-w-2xl mx-auto  my-20">
       <div className="px-10">
         <div className="w-full flex flex-wrap items-center">
-          <input
-            type="file"
-            {...register("image")}
-            onChange={handleAvatarPreview}
-            className="block p-2 text-sm text-white bg-blue-600 rounded-lg cursor-pointer focus:outline-none file:hidden  active:bg-blue-700"
-            style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12' /%3E%3C/svg%3E")`,
-              backgroundRepeat: "no-repeat",
-              backgroundPosition: "left 0.75rem center",
-              backgroundSize: "1.25rem",
-              paddingLeft: "2.5rem",
-            }}
-            placeholder="Upload Avatar"
-          />
           <div className="p-2  rounded-full">
-            {/* <img
-              className=" w-20 h-20 object-cover rounded-full outline-2 outline-slate-700"
-              // src={imagePreview ? imagePreview : "user.svg"}
-              src={
-                imagePreview
-                  ? imagePreview
-                  : userDetails.avatar
-                  ? databaseService.getFilePreview(userDetails.avatar)
-                  : "/user.svg"
-              }
-              alt=""
-            /> */}
-
             {imagePreview ? (
               <img
                 src={imagePreview}
@@ -123,6 +96,21 @@ function UserForm({ userDetails }) {
               </svg>
             )}
           </div>
+
+          <input
+            type="file"
+            {...register("image")}
+            onChange={handleAvatarPreview}
+            className="block p-2 text-sm grow max-w-full text-white bg-blue-600 rounded-lg cursor-pointer focus:outline-none file:hidden  active:bg-blue-700"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12' /%3E%3C/svg%3E")`,
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "left 0.75rem center",
+              backgroundSize: "1.25rem",
+              paddingLeft: "2.5rem",
+            }}
+            placeholder="Upload Avatar"
+          />
         </div>
 
         <Input
