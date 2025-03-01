@@ -28,17 +28,23 @@ function MyPosts() {
     );
   }
   return (
-    <div className="w-full py-8">
+    <div className="w-full py-2 ">
       <Container>
-        <div className="flex justify-center flex-wrap">
-          {allPosts.map((post) => (
-            <div
-              key={post.$id}
-              className="p-2 w-full max-w-lg md:w-1/2 lg:w-1/3"
-            >
-              <PostCard {...post} />
-            </div>
-          ))}
+        <div className="flex justify-center">
+          <article>
+            {[...allPosts]
+              .sort((a, b) => {
+                return new Date(b.$updatedAt) - new Date(a.$updatedAt);
+              })
+              .map((post) => (
+                <div
+                  key={post.$id}
+                  className="p-2 w-full max-w-lg lg:max-w-[36rem] "
+                >
+                  <PostCard {...post} />
+                </div>
+              ))}
+          </article>
         </div>
       </Container>
     </div>

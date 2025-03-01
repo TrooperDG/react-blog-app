@@ -126,7 +126,7 @@ function Post() {
           <PostCard {...post} isView={true} />
           <div
             id="comments"
-            className=" relative outline-1 outline-gray-200 rounded-md pt-3 mt-2 px-4 md:px-10"
+            className=" relative outline-1 bg-white outline-gray-200 rounded-md pt-3 mt-2 px-4 md:px-10"
           >
             <button className="flex items-center gap-1 text-xs  text-gray-500  transition absolute left-3 top-3 md:left-10 outline-gray-300">
               <span className="">{commentCount > 0 && commentCount}</span>

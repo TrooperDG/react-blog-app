@@ -77,7 +77,7 @@ export default function PostComments({ currentPostId, handleCommentCount }) {
     fetchComments();
   }, [currentPostId]);
   return (
-    <div className="w-full rounded-md py-3  mt-2.5 duration-100">
+    <div className="w-full rounded-md py-3 bg-white  mt-2.5 duration-100">
       <form onSubmit={handleSubmit(submit)}>
         <div className=" flex items-end ">
           <textarea
