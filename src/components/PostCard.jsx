@@ -142,8 +142,10 @@ function PostCard({
                 src={databaseService.getFilePreview(featuredImage)}
                 alt="Blog"
                 className={` ${
-                  isView ? "max-h-[60vw]" : "w-full"
-                } object-cover aspect-video rounded-lg mb-3`}
+                  isView
+                    ? "max-h-[50vh] object-contain "
+                    : "w-full object-cover aspect-video "
+                } rounded-lg mb-3`}
               />
             )}
           </div>

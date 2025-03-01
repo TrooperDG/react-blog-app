@@ -50,7 +50,7 @@ function Post() {
 
   if (loading) return <Loading />;
   return post ? (
-    <div className="py-8 ">
+    <div className="py-5 ">
       <Container>
         {/* <div className="w-full flex justify-center mb-4 relative border rounded-xl p-2">
           <img
@@ -126,7 +126,7 @@ function Post() {
           <PostCard {...post} isView={true} />
           <div
             id="comments"
-            className=" relative outline-1 outline-gray-200 rounded-md pt-3 px-4 md:px-10"
+            className=" relative outline-1 outline-gray-200 rounded-md pt-3 mt-2 px-4 md:px-10"
           >
             <button className="flex items-center gap-1 text-xs  text-gray-500  transition absolute left-3 top-3 md:left-10">
               <span className="">{commentCount > 0 && commentCount}</span>
