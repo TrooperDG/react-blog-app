@@ -39,8 +39,8 @@ function Post() {
     setLoading(false);
   }, [postId]);
 
-  function deletePost() {
-    databaseService.deletePost(post.$id).then((status) => {
+  async function deletePost() {
+    await databaseService.deletePost(post.$id).then((status) => {
       if (status) {
         databaseService.deleteFile(post.feturedImage);
         navigate("/");
@@ -68,7 +68,7 @@ function Post() {
           {isAuthor && (
             <div className=" absolute right-2 top-5 md:right-8">
               <button
-                className=" three-dots py-1 "
+                className=" three-dots py-1 outline-gray-300"
                 onClick={() => setIsEditDeleteOpen((prev) => !prev)}
               >
                 <svg
@@ -87,8 +87,8 @@ function Post() {
                 >
                   <Link to={`/edit-post/${post.$id}`}>
                     <button
-                      id="edit-comment"
-                      className=" p-1 mr-2  hover:bg-gray-100 active:bg-gray-100"
+                      id="edit-comment "
+                      className=" p-1 mr-2  hover:bg-gray-100 active:bg-gray-100 outline-gray-300"
                     >
                       <svg
                         className="w-6 h-6"
@@ -104,7 +104,7 @@ function Post() {
                   </Link>
                   <button
                     id="delete-comment"
-                    className="  p-1  hover:bg-gray-100 active:bg-gray-100 "
+                    className="  p-1  hover:bg-gray-100 active:bg-gray-100 outline-gray-300 "
                     onClick={deletePost}
                   >
                     <svg
@@ -128,7 +128,7 @@ function Post() {
             id="comments"
             className=" relative outline-1 outline-gray-200 rounded-md pt-3 mt-2 px-4 md:px-10"
           >
-            <button className="flex items-center gap-1 text-xs  text-gray-500  transition absolute left-3 top-3 md:left-10">
+            <button className="flex items-center gap-1 text-xs  text-gray-500  transition absolute left-3 top-3 md:left-10 outline-gray-300">
               <span className="">{commentCount > 0 && commentCount}</span>
               <FaRegComment />
               <span>{commentCount <= 1 ? "Comment" : "Comments"}</span>

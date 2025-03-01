@@ -36,8 +36,8 @@ export default function UserAccount({ userDetails }) {
               to="/edit-account"
             >
               <button
-                id="edit-account"
-                className=" p-1 mr-2 rounded-md  flex items-center gap-1.5 bg-white  hover:bg-gray-100 active:bg-gray-100"
+                id="edit-account "
+                className=" p-1 mr-2 rounded-md  flex items-center gap-1.5 bg-white outline-gray-300  hover:bg-gray-100 active:bg-gray-100"
               >
                 <svg
                   className="w-5 h-5"

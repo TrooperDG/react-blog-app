@@ -24,8 +24,6 @@ export default function PostComments({ currentPostId, handleCommentCount }) {
       ...data,
       postId: currentPostId,
       userId: userDetails.$id,
-      username: userDetails.username,
-      userAvatar: userDetails.avatar,
     });
     setPostComments([...postComments, comment]);
 
@@ -34,6 +32,7 @@ export default function PostComments({ currentPostId, handleCommentCount }) {
     await databaseService.updatePost(currentPostId, {
       commentIds: newPostCommentIds,
     });
+
     // await databaseService.updateUser(userDetails.$id, {
     //   commentIds: newPostCommentIds,
     // });
@@ -42,26 +41,36 @@ export default function PostComments({ currentPostId, handleCommentCount }) {
   }
 
   async function handleDeleteComment(commentId) {
-    databaseService.deleteComment(commentId);
     const newComments = postComments.filter(
       (comment) => comment.$id !== commentId
     );
 
     setPostComments(newComments);
     handleCommentCount(newComments.length);
-
     const newPostCommentIds = newComments.map((comment) => comment.$id);
-    await databaseService.updatePost(currentPostId, {
-      commentIds: newPostCommentIds,
-    });
+    try {
+      await databaseService.deleteComment(commentId);
+      await databaseService.updatePost(currentPostId, {
+        commentIds: newPostCommentIds,
+      });
+    } catch (error) {
+      console.log("handleDeleteComment :: ", error);
+    }
   }
   async function handleEditComment(commentId, newComment) {
-    databaseService.updateComment(commentId, { comment: newComment });
     setPostComments((prev) =>
       prev.map((item) =>
-        item.$id === commentId ? { ...item, comment: newComment } : item
+        item.$id === commentId
+          ? { ...item, comment: newComment, $updatedAt: new Date() }
+          : item
       )
     );
+
+    try {
+      await databaseService.updateComment(commentId, { comment: newComment });
+    } catch (error) {
+      console.log("handleEditComment :: ", error);
+    }
   }
 
   useEffect(() => {
@@ -78,7 +87,7 @@ export default function PostComments({ currentPostId, handleCommentCount }) {
             {...register("comment", { required: true })}
             style={{ fieldSizing: "content" }}
           ></textarea>
-          <button className="ml-2 mb-1" type="submit">
+          <button className="ml-2 mb-1 outline-gray-300" type="submit">
             <svg
               className="w-7 h-7 "
               xmlns="http://www.w3.org/2000/svg"

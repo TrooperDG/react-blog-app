@@ -157,7 +157,7 @@ function PostCard({
         {/* Like Share Comment */}
         <div className="flex items-center justify-between text-gray-600">
           <button
-            className="flex items-center gap-1 hover:text-red-500 transition"
+            className="flex items-center gap-1 hover:text-red-500 outline-gray-200 transition"
             onClick={handleLike}
           >
             <span className="">{likeCount > 0 && likeCount}</span>
@@ -166,7 +166,7 @@ function PostCard({
           </button>
           {!isView && (
             <button
-              className={`flex items-center gap-1 hover:text-blue-500 transition ${
+              className={`flex items-center gap-1 hover:text-blue-500 transition outline-gray-200 ${
                 isCommentOpen && "text-blue-500"
               }`}
               onClick={() => setIsCommentOpen((prev) => !prev)}
@@ -176,7 +176,7 @@ function PostCard({
               <span>{commentCount <= 1 ? "Comment" : "Comments"}</span>
             </button>
           )}
-          <button className="flex items-center gap-1 hover:text-green-500 transition">
+          <button className="flex items-center gap-1 hover:text-green-500 transition outline-gray-200">
             <FaShare /> <span>Share</span>
           </button>
         </div>

@@ -2,12 +2,18 @@ import React, { useState } from "react";
 import { getTimeAgo } from "../../utility";
 import { useSelector } from "react-redux";
 import databaseService from "../../appwrite/database";
+import { Query } from "appwrite";
 databaseService;
 
 function Comment({ comment, handleDeleteComment, handleEditComment }) {
   const [isEditDeleteOpen, setIsEditDeleteOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [editComment, setEditComment] = useState(comment.comment);
+  const [commentCreator, setCommentCreator] = useState(null);
+
+  databaseService
+    .getUser(comment.userId, [Query.select(["username", "avatar"])])
+    .then((data) => setCommentCreator(data));
 
   const userData = useSelector((state) => state.auth.userData);
   const isAuthor =
@@ -34,10 +40,10 @@ function Comment({ comment, handleDeleteComment, handleEditComment }) {
   return (
     <>
       <div className=" w-8 h-8 ">
-        {comment.userAvatar ? (
+        {commentCreator && commentCreator.avatar ? (
           <img
             className="w-full h-full rounded-full  p-0.5 "
-            src={databaseService.getFilePreview(comment.userAvatar)}
+            src={databaseService.getFilePreview(commentCreator.avatar)}
             alt={"user img"}
           />
         ) : (
@@ -55,7 +61,7 @@ function Comment({ comment, handleDeleteComment, handleEditComment }) {
       </div>
       <div className=" grow">
         <h1 className="font-semibold text-slate-600 text-sm">
-          @{comment.username ? comment.username : "_ _ _ _"}
+          @{commentCreator ? commentCreator.username : "_ _ _ _"}
           <small className="ml-2.5 ">{getTimeAgo(comment.$updatedAt)}</small>
         </h1>
         {/* <p>{comment.comment}</p> */}
@@ -72,7 +78,10 @@ function Comment({ comment, handleDeleteComment, handleEditComment }) {
           ></textarea>
           {isEdit && (
             <>
-              <button className="ml-2 mb-1" onClick={handleSubmitComment}>
+              <button
+                className="ml-2 mb-1 outline-gray-300"
+                onClick={handleSubmitComment}
+              >
                 <svg
                   className="w-7 h-7 "
                   xmlns="http://www.w3.org/2000/svg"
@@ -84,7 +93,10 @@ function Comment({ comment, handleDeleteComment, handleEditComment }) {
                   <path d="M120-160v-640l760 320-760 320Zm80-120 474-200-474-200v140l240 60-240 60v140Zm0 0v-400 400Z" />
                 </svg>
               </button>
-              <button className="ml-2 mb-1" onClick={handleCancelEdit}>
+              <button
+                className="ml-2 mb-1 outline-gray-300"
+                onClick={handleCancelEdit}
+              >
                 <svg
                   className="w-7 h-7 "
                   xmlns="http://www.w3.org/2000/svg"
@@ -104,7 +116,7 @@ function Comment({ comment, handleDeleteComment, handleEditComment }) {
         <div className="features relative ">
           {!isEdit && (
             <button
-              className=" three-dots py-1 "
+              className=" three-dots py-1 outline-gray-300 "
               onClick={() => setIsEditDeleteOpen((prev) => !prev)}
             >
               <svg
@@ -124,7 +136,7 @@ function Comment({ comment, handleDeleteComment, handleEditComment }) {
             >
               <button
                 id="edit-comment"
-                className=" p-1 mr-2  hover:bg-gray-100 active:bg-gray-100"
+                className=" p-1 mr-2  hover:bg-gray-100 active:bg-gray-100 outline-gray-300"
                 onClick={handleEdit}
               >
                 <svg
@@ -141,7 +153,7 @@ function Comment({ comment, handleDeleteComment, handleEditComment }) {
 
               <button
                 id="delete-comment"
-                className="  p-1  hover:bg-gray-100 active:bg-gray-100 "
+                className="  p-1  hover:bg-gray-100 active:bg-gray-100 outline-gray-300 "
                 onClick={() => handleDeleteComment(comment.$id)}
               >
                 <svg
