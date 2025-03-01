@@ -56,7 +56,7 @@ function App() {
   return (
     <>
       <Header />
-      <main className="mt-16">
+      <main className="mt-16 md:bg-orange-50">
         <Outlet />
       </main>
       <Footer />

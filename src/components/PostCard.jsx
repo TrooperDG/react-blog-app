@@ -105,9 +105,9 @@ function PostCard({
   return (
     <>
       <div
-        className={`bg-white p-4 ${
-          isView ? "rounded-md md:px-10" : "rounded-2xl"
-        } w-full border border-gray-200 `}
+        className={`bg-white p-4  ${
+          isView && "md:px-10"
+        } w-full border rounded-md border-gray-200 `}
       >
         {/* User Info */}
         <div className="flex items-center gap-3 mb-3">
@@ -136,7 +136,7 @@ function PostCard({
         </div>
         {/* Image */}
         <Link to={`/post/${$id}`}>
-          <div className={`w-full flex justify-center mb-4  `}>
+          <div className={`w-full flex justify-center mb-3  `}>
             {featuredImage && (
               <img
                 src={databaseService.getFilePreview(featuredImage)}
@@ -144,18 +144,18 @@ function PostCard({
                 className={` ${
                   isView
                     ? "max-h-[50vh] object-contain "
-                    : "w-full object-cover aspect-video "
-                } rounded-lg mb-3`}
+                    : "w-full object-cover max-h-90 md: md:max-h-120 "
+                } rounded-lg `}
               />
             )}
           </div>
         </Link>
         {/* Title */}
-        <h2 className="text-md  text-gray-900 mb-3">{title}</h2>
+        <h2 className="text-md font-semibold  text-gray-700  mb-4">{title}</h2>
         {/* Content */}
 
         {/* Like Share Comment */}
-        <div className="flex items-center justify-between text-gray-600">
+        <div className="flex items-center justify-between text-gray-600 border-t pt-2 border-gray-200">
           <button
             className="flex items-center gap-1 hover:text-red-500 outline-gray-200 transition"
             onClick={handleLike}
