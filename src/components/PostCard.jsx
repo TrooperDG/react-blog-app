@@ -1,83 +1,108 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import databaseService from "../appwrite/database";
 import { Link, useNavigate } from "react-router-dom";
 import { FaRegHeart, FaHeart, FaRegComment, FaShare } from "react-icons/fa";
+import parse from "html-react-parser";
 import { useSelector, useDispatch } from "react-redux";
 import { addUserDetails } from "../store/userSlice";
 import { Query } from "appwrite";
 import { PostComments } from ".";
+import { debounce } from "../utility";
 
 function PostCard({
   $id,
   title,
   featuredImage,
   userId,
+  content,
   likedUserIds,
-  commentUserIds,
+  commentIds,
+  isView = false,
 }) {
   const [liked, setLiked] = useState(false);
   const [creatorData, setCreatorData] = useState(null);
+  const [isCommentOpen, setIsCommentOpen] = useState(false);
   const [likeCount, setLikeCount] = useState(likedUserIds.length);
+  const [commentCount, setCommentCount] = useState(commentIds.length);
   // const [commentUserIds, setCommentUserIds] = useState([]);
   const userDetails = useSelector((state) => state.user.userDetails);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  async function fetchData() {
-    const user = await databaseService.getUser(userId, [
-      Query.select(["username", "avatar"]),
-    ]);
-    setCreatorData(user);
-
-    if (userDetails) {
-      const likedIndex = likedUserIds.indexOf(userDetails.$id);
-      if (likedIndex >= 0) setLiked(true);
-    }
-  }
-
-  // console.log(likeCount, liked);
-  async function handleLike() {
-    if (userDetails) {
-      setLiked((prev) => !prev);
-      //! need a debouncing here
-      let newLikedUserIds = likedUserIds;
-      let newLikedPostIds = userDetails.likedPostIds;
-      if (liked) {
-        newLikedUserIds = likedUserIds.filter(
-          (userId) => userId !== userDetails.$id
-        );
-        newLikedPostIds = userDetails.likedPostIds.filter(
-          (postId) => postId !== $id
-        );
-      } else {
-        newLikedUserIds = [...likedUserIds, userDetails.$id];
-        newLikedPostIds = [...userDetails.likedPostIds, $id];
+  // new optimized handleLike
+  const handleLike = useCallback(
+    debounce(async () => {
+      if (!userDetails) {
+        navigate("/login");
+        return;
       }
-      setLikeCount(newLikedUserIds.length);
+      setLiked((prev) => !prev);
 
-      await databaseService.updatePost($id, { likedUserIds: newLikedUserIds });
+      let updatedLikedUserIds = new Set(likedUserIds);
+      let updatedLikedPostIds = new Set(userDetails.likedPostIds);
 
-      //*updating user collection
-      await databaseService.updateUser(userDetails.$id, {
-        likedPostIds: newLikedPostIds,
-      });
-      dispatch(
-        addUserDetails({
-          ...userDetails,
-          likedPostIds: newLikedPostIds,
-        })
-      );
-    } else {
-      navigate("/login");
-    }
-  }
+      if (liked) {
+        updatedLikedUserIds.delete(userDetails.$id);
+        updatedLikedPostIds.delete($id);
+      } else {
+        updatedLikedUserIds.add(userDetails.$id);
+        updatedLikedPostIds.add($id);
+      }
+      setLikeCount(updatedLikedUserIds.size);
+
+      try {
+        await databaseService.updatePost($id, {
+          likedUserIds: Array.from(updatedLikedUserIds),
+        });
+
+        await databaseService.updateUser(userDetails.$id, {
+          likedPostIds: Array.from(updatedLikedPostIds),
+        });
+
+        dispatch(
+          addUserDetails({
+            ...userDetails,
+            likedPostIds: Array.from(updatedLikedPostIds),
+          })
+        );
+      } catch (error) {
+        console.error("Error updating like:", error);
+      }
+    }, 500), // Debounce time: 500ms
+    [userDetails, likedUserIds, $id]
+  );
 
   useEffect(() => {
+    let isMounted = true;
+
+    const fetchData = async () => {
+      try {
+        const user = await databaseService.getUser(userId, [
+          Query.select(["username", "avatar"]),
+        ]);
+
+        if (isMounted) setCreatorData(user);
+        if (userDetails && isMounted) {
+          const likedIndex = likedUserIds.indexOf(userDetails.$id);
+          if (likedIndex >= 0) setLiked(true);
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
     fetchData();
-  }, [userDetails]);
+
+    return () => {
+      isMounted = false; // Cleanup
+    };
+  }, [userDetails?.$id]);
   return (
     <>
-      <div className="bg-white p-4 rounded-2xl shadow-md w-full border border-gray-200">
+      <div
+        className={`bg-white p-4 ${
+          isView ? "rounded-md md:px-10" : "rounded-2xl"
+        } w-full border border-gray-200 `}
+      >
         {/* User Info */}
         <div className="flex items-center gap-3 mb-3">
           <div className="w-10 h-10 bg-gray-300 rounded-full ">
@@ -105,37 +130,55 @@ function PostCard({
         </div>
         {/* Image */}
         <Link to={`/post/${$id}`}>
-          <div className="w-full justify-center mb-4 ">
+          <div className={`w-full flex justify-center mb-4  `}>
             {featuredImage && (
               <img
                 src={databaseService.getFilePreview(featuredImage)}
                 alt="Blog"
-                className="w-full  object-cover aspect-video rounded-lg mb-3"
+                className={` ${
+                  isView ? "max-h-[60vw]" : "w-full"
+                } object-cover aspect-video rounded-lg mb-3`}
               />
             )}
           </div>
         </Link>
         {/* Title */}
         <h2 className="text-md  text-gray-900 mb-3">{title}</h2>
-        {/* Actions */}
+        {/* Content */}
+
+        {/* Like Share Comment */}
         <div className="flex items-center justify-between text-gray-600">
           <button
             className="flex items-center gap-1 hover:text-red-500 transition"
             onClick={handleLike}
           >
-            {likeCount > 0 ? likeCount : null}
+            <span className="">{likeCount > 0 && likeCount}</span>
             {liked ? <FaHeart className="text-red-500" /> : <FaRegHeart />}
             <span>Like</span>
           </button>
-          <button className="flex items-center gap-1 hover:text-blue-500 transition">
-            <FaRegComment /> <span>Comment</span>
-          </button>
+          {!isView && (
+            <button
+              className="flex items-center gap-1 hover:text-blue-500 transition"
+              onClick={() => setIsCommentOpen((prev) => !prev)}
+            >
+              <span className="">{commentCount > 0 && commentCount}</span>
+              <FaRegComment /> <span>Comment</span>
+            </button>
+          )}
           <button className="flex items-center gap-1 hover:text-green-500 transition">
             <FaShare /> <span>Share</span>
           </button>
         </div>
+        {isView && (
+          <div className="browser-css text-lg mt-3">{parse(content)}</div>
+        )}
 
-        <PostComments currentPostId={$id} />
+        {!isView && isCommentOpen && (
+          <PostComments
+            currentPostId={$id}
+            handleCommentCount={(count) => setCommentCount(count)}
+          />
+        )}
       </div>
     </>
   );

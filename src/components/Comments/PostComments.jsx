@@ -5,12 +5,11 @@ import { Query } from "appwrite";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 
-export default function PostComments({ currentPostId }) {
+export default function PostComments({ currentPostId, handleCommentCount }) {
   const [postComments, setPostComments] = useState([]);
 
   const userDetails = useSelector((state) => state.user.userDetails);
   const { register, handleSubmit, setValue } = useForm();
-  // let newPostComments = postComments;
 
   async function fetchComments() {
     const comments = await databaseService.getComments([
@@ -19,6 +18,7 @@ export default function PostComments({ currentPostId }) {
     setPostComments(comments.documents);
   }
   async function submit(data) {
+    let newPostComments = postComments;
     data.comment = data.comment.trim();
     const comment = await databaseService.createComment({
       ...data,
@@ -29,23 +29,31 @@ export default function PostComments({ currentPostId }) {
     });
     setPostComments([...postComments, comment]);
 
-    // newPostComments = [...postComments, comment];
-    // const newPostCommentIds = newPostComments.map((comment) => comment.$id);
-
-    // await databaseService.updatePost(currentPostId, {
-    //   commentIds: newPostCommentIds,
-    // });
+    newPostComments = [...postComments, comment];
+    const newPostCommentIds = newPostComments.map((comment) => comment.$id);
+    await databaseService.updatePost(currentPostId, {
+      commentIds: newPostCommentIds,
+    });
     // await databaseService.updateUser(userDetails.$id, {
     //   commentIds: newPostCommentIds,
     // });
     setValue("comment", "");
+    handleCommentCount(newPostComments.length);
   }
 
   async function handleDeleteComment(commentId) {
     databaseService.deleteComment(commentId);
-    setPostComments((prev) =>
-      prev.filter((comment) => comment.$id !== commentId)
+    const newComments = postComments.filter(
+      (comment) => comment.$id !== commentId
     );
+
+    setPostComments(newComments);
+    handleCommentCount(newComments.length);
+
+    const newPostCommentIds = newComments.map((comment) => comment.$id);
+    await databaseService.updatePost(currentPostId, {
+      commentIds: newPostCommentIds,
+    });
   }
   async function handleEditComment(commentId, newComment) {
     databaseService.updateComment(commentId, { comment: newComment });
@@ -60,7 +68,7 @@ export default function PostComments({ currentPostId }) {
     fetchComments();
   }, [currentPostId]);
   return (
-    <div className="w-full outline-1 outline-gray-200 rounded-md py-3 px-4 mt-2.5 ">
+    <div className="w-full rounded-md py-3  mt-2.5 duration-100">
       <form onSubmit={handleSubmit(submit)}>
         <div className=" flex items-end ">
           <textarea
@@ -94,7 +102,7 @@ export default function PostComments({ currentPostId }) {
               .map((comment) => (
                 <li
                   key={comment.$id}
-                  className="flex gap-2 items-center mt-5 mb-2 w-full "
+                  className="flex gap-2 items-center mt-4 mb-1 w-full "
                 >
                   <Comment
                     comment={comment}

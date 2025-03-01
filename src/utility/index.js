@@ -1,3 +1,4 @@
 import getTimeAgo from "./getTimeAgo";
+import debounce from "./debounce";
 
-export { getTimeAgo };
+export { getTimeAgo, debounce };

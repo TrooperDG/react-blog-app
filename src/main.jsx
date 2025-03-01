@@ -86,7 +86,7 @@ const router = createBrowserRouter(
             </Protected>
           }
         />
-        <Route path="/post/:slug" element={<Post />} />
+        <Route path="/post/:postId" element={<Post />} />
         <Route path="/loding" element={<Loading />} />
       </Route>
       <Route path="*" element={<NotFound />} />

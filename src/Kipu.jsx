@@ -115,3 +115,58 @@ export default BlogCard;
 //   navRef.current.style.left = "0px";
 //   setIsSIdeBar((prev) => !prev);
 // }
+
+// async function fetchData() {
+//   const user = await databaseService.getUser(userId, [
+//     Query.select(["username", "avatar"]),
+//   ]);
+//   setCreatorData(user);
+
+//   if (userDetails) {
+//     const likedIndex = likedUserIds.indexOf(userDetails.$id);
+//     if (likedIndex >= 0) setLiked(true);
+//   }
+// }
+
+// const debouncedLog = debounce((func) => {
+//   func();
+// }, 1000);
+
+// async function handleLike() {
+
+//   if (userDetails) {
+//     setLiked((prev) => !prev);
+
+//     //! need a debouncing here
+//     let newLikedUserIds = [...likedUserIds];
+//     let newLikedPostIds = [...userDetails.likedPostIds];
+//     if (liked) {
+//       newLikedUserIds = likedUserIds.filter(
+//         (userId) => userId !== userDetails.$id
+//       );
+//       newLikedPostIds = userDetails.likedPostIds.filter(
+//         (postId) => postId !== $id
+//       );
+//     } else {
+//       newLikedUserIds = [...likedUserIds, userDetails.$id];
+//       newLikedPostIds = [...userDetails.likedPostIds, $id];
+//     }
+//     setLikeCount(newLikedUserIds.length);
+
+//     await databaseService.updatePost($id, { likedUserIds: newLikedUserIds });
+
+//     //*updating user collection
+//     await databaseService.updateUser(userDetails.$id, {
+//       likedPostIds: newLikedPostIds,
+//     });
+//     dispatch(
+//       addUserDetails({
+//         ...userDetails,
+//         likedPostIds: newLikedPostIds,
+//       })
+//     );
+//   } else {
+//     navigate("/login");
+//   }
+
+// }

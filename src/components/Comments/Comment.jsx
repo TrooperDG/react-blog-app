@@ -28,10 +28,10 @@ function Comment({ comment, handleDeleteComment, handleEditComment }) {
   }
   return (
     <>
-      <div className=" w-10 ">
+      <div className=" w-8 h-8 ">
         {comment.userAvatar ? (
           <img
-            className="w-full rounded-full  p-0.5 "
+            className="w-full h-full rounded-full  p-0.5 "
             src={databaseService.getFilePreview(comment.userAvatar)}
             alt={"user img"}
           />
