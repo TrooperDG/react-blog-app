@@ -1,7 +1,13 @@
 import React, { useEffect, useState, useCallback } from "react";
 import databaseService from "../appwrite/database";
 import { Link, useNavigate } from "react-router-dom";
-import { FaRegHeart, FaHeart, FaRegComment, FaShare } from "react-icons/fa";
+import {
+  FaRegHeart,
+  FaHeart,
+  FaComment,
+  FaRegComment,
+  FaShare,
+} from "react-icons/fa";
 import parse from "html-react-parser";
 import { useSelector, useDispatch } from "react-redux";
 import { addUserDetails } from "../store/userSlice";
@@ -154,15 +160,18 @@ function PostCard({
           >
             <span className="">{likeCount > 0 && likeCount}</span>
             {liked ? <FaHeart className="text-red-500" /> : <FaRegHeart />}
-            <span>Like</span>
+            <span>{commentCount <= 1 ? "Like" : "Likes"}</span>
           </button>
           {!isView && (
             <button
-              className="flex items-center gap-1 hover:text-blue-500 transition"
+              className={`flex items-center gap-1 hover:text-blue-500 transition ${
+                isCommentOpen && "text-blue-500"
+              }`}
               onClick={() => setIsCommentOpen((prev) => !prev)}
             >
               <span className="">{commentCount > 0 && commentCount}</span>
-              <FaRegComment /> <span>Comment</span>
+              {isCommentOpen ? <FaComment /> : <FaRegComment />}
+              <span>{commentCount <= 1 ? "Comment" : "Comments"}</span>
             </button>
           )}
           <button className="flex items-center gap-1 hover:text-green-500 transition">

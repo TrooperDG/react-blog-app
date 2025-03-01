@@ -128,9 +128,10 @@ function Post() {
             id="comments"
             className=" relative outline-1 outline-gray-200 rounded-md pt-3 px-4 md:px-10"
           >
-            <button className="flex items-center gap-1 text-xs  text-gray-500  transition absolute left-4 top-3 md:left-10">
+            <button className="flex items-center gap-1 text-xs  text-gray-500  transition absolute left-3 top-3 md:left-10">
               <span className="">{commentCount > 0 && commentCount}</span>
-              <FaRegComment /> <span>Comments</span>
+              <FaRegComment />
+              <span>{commentCount <= 1 ? "Comment" : "Comments"}</span>
             </button>
             <PostComments
               currentPostId={postId}
