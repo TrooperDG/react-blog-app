@@ -132,7 +132,7 @@ export default function PostComments({
         <div>
           <ul
             className={`mt-1.5 scrollable-content overflow-auto ${
-              fixedPosition ? "h-[70lvh] md:max-h-60 " : " max-h-60 "
+              fixedPosition ? "h-[60lvh] md:max-h-60 " : " max-h-60 "
             } `}
           >
             {postComments.length > 0 &&
