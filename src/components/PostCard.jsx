@@ -42,20 +42,19 @@ function PostCard({
         navigate("/login");
         return;
       }
-      setLiked((prev) => !prev);
-
       let updatedLikedUserIds = new Set(likedUserIds);
       let updatedLikedPostIds = new Set(userDetails.likedPostIds);
 
       if (liked) {
+        setLiked(false);
         updatedLikedUserIds.delete(userDetails.$id);
         updatedLikedPostIds.delete($id);
       } else {
+        setLiked(true);
         updatedLikedUserIds.add(userDetails.$id);
         updatedLikedPostIds.add($id);
       }
       setLikeCount(updatedLikedUserIds.size);
-
       try {
         await databaseService.updatePost($id, {
           likedUserIds: Array.from(updatedLikedUserIds),
