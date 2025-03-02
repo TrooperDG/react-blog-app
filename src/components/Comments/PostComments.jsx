@@ -84,16 +84,16 @@ export default function PostComments({
   }, [currentPostId]);
   return (
     <div
-      className={`w-full  ${
+      className={`w-full py-3 mt-2.5    ${
         fixedPosition
           ? "fixed bottom-0 left-0 right-0  h-screen flex items-end bg-black/50 md:bg-transparent  md:static md:inline-block md:h-auto "
-          : "static inline-block "
+          : "static inline-block  "
       } `}
     >
       <div
         className={`${
           fixedPosition && "px-4 md:px-0"
-        } w-full rounded-md py-3 bg-white  mt-2.5 duration-100 relative`}
+        } w-full rounded-md bg-white  duration-100 relative`}
       >
         <button
           id="comment-close-button"

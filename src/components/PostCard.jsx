@@ -143,9 +143,9 @@ function PostCard({
                 alt="Blog"
                 className={` ${
                   isView
-                    ? "max-h-[50vh] object-contain "
-                    : "w-full object-cover max-h-90 md: md:max-h-120 "
-                } rounded-lg `}
+                    ? " max-h-[50vh] object-contain "
+                    : "object-cover max-h-90 md: md:max-h-120 "
+                } rounded-lg   w-full`}
               />
             )}
           </div>

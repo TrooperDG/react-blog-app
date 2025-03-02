@@ -99,6 +99,7 @@ function UserForm({ userDetails }) {
 
           <input
             type="file"
+            accept="image/png, image/jpg, image/jpeg, image/gif"
             {...register("image")}
             onChange={handleAvatarPreview}
             className="block p-2 text-sm grow max-w-full text-white bg-blue-600 rounded-lg cursor-pointer focus:outline-none file:hidden  active:bg-blue-700"
