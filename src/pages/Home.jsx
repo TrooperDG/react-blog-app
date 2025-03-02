@@ -33,7 +33,6 @@ function Home() {
   if (allPosts.length === 0) {
     return <h1 className="text-5xl">No post available</h1>;
   }
-  console.log("heeyyyyyyyyyyyy");
 
   return (
     <div className="w-full py-2  ">
