@@ -38,16 +38,15 @@ function Header() {
     <header className="py-3 shadow-black/30 shadow-lg fixed top-0 left-0 right-0 z-40 bg-slate-800 ">
       <Container>
         <nav className="flex mx-4">
-          <div className="mr-2 w-10 md:hidden">
+          <div className="mr-2 w-10 md:hidden p-0.5 ">
             <button
               onClick={() => (navRef.current.style.left = "0px")}
               className="text-white active:bg-slate-600"
             >
               <svg
+                className="w-8"
                 xmlns="http://www.w3.org/2000/svg"
-                height="32px"
                 viewBox="0 -960 960 960"
-                width="32px"
                 fill="#e8eaed"
               >
                 <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" />
@@ -57,7 +56,7 @@ function Header() {
 
           <div className="mr-4  ">
             <Link to="/">
-              <Logo width="70px" />
+              <Logo width="w-10" />
             </Link>
           </div>
 
