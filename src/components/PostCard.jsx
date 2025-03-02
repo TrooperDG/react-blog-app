@@ -186,6 +186,8 @@ function PostCard({
 
         {!isView && isCommentOpen && (
           <PostComments
+            handleCloseComment={() => setIsCommentOpen(false)}
+            fixedPosition={true}
             currentPostId={$id}
             handleCommentCount={(count) => setCommentCount(count)}
           />

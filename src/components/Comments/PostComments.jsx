@@ -5,7 +5,12 @@ import { Query } from "appwrite";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 
-export default function PostComments({ currentPostId, handleCommentCount }) {
+export default function PostComments({
+  currentPostId,
+  handleCommentCount,
+  fixedPosition,
+  handleCloseComment,
+}) {
   const [postComments, setPostComments] = useState([]);
 
   const userDetails = useSelector((state) => state.user.userDetails);
@@ -78,84 +83,111 @@ export default function PostComments({ currentPostId, handleCommentCount }) {
     fetchComments();
   }, [currentPostId]);
   return (
-    <div className="w-full rounded-md py-3 bg-white  mt-2.5 duration-100">
-      <form onSubmit={handleSubmit(submit)}>
-        <div className=" flex items-end ">
-          <textarea
-            type="text"
-            placeholder="Add a comment"
-            className=" py-2  border-b-2 border-gray-300 focus:border-gray-400 duration-100 outline-none w-full resize-none "
-            {...register("comment", { required: true })}
-            style={{ fieldSizing: "content" }}
-          ></textarea>
-          <button className="ml-2 mb-1 outline-gray-300" type="submit">
-            <svg
-              className="w-7 h-7 "
-              xmlns="http://www.w3.org/2000/svg"
-              height="24px"
-              viewBox="0 -960 960 960"
-              width="24px"
-              fill="#6a7282"
-            >
-              <path d="M120-160v-640l760 320-760 320Zm80-120 474-200-474-200v140l240 60-240 60v140Zm0 0v-400 400Z" />
-            </svg>
-          </button>
-        </div>
-      </form>
-      <div>
-        <ul className="mt-1.5 scrollable-content overflow-auto max-h-60 ">
-          {postComments.length > 0 &&
-            userDetails &&
-            [...postComments]
-              .sort((a, b) => {
-                return new Date(b.$updatedAt) - new Date(a.$updatedAt);
-              })
-              .filter((comment) => comment.userId === userDetails.$id)
-              .map((comment) => (
-                <li
-                  key={comment.$id}
-                  className="flex gap-2 items-center mt-4 mb-1 w-full "
-                >
-                  <Comment
-                    comment={comment}
-                    handleDeleteComment={(commentId) =>
-                      handleDeleteComment(commentId)
-                    }
-                    handleEditComment={(commentId, newComment) =>
-                      handleEditComment(commentId, newComment)
-                    }
-                  />
-                </li>
-              ))}
-          {postComments.length > 0 &&
-            [...postComments]
-              .sort((a, b) => {
-                return new Date(b.$updatedAt) - new Date(a.$updatedAt);
-              })
-              .filter((comment) =>
-                userDetails ? comment.userId !== userDetails.$id : true
-              )
-              .map((comment) => (
-                <li
-                  key={comment.$id}
-                  className="flex gap-2 items-center mt-4 mb-1 w-full "
-                >
-                  <Comment
-                    comment={comment}
-                    handleDeleteComment={(commentId) =>
-                      handleDeleteComment(commentId)
-                    }
-                    handleEditComment={(commentId, newComment) =>
-                      handleEditComment(commentId, newComment)
-                    }
-                  />
-                </li>
-              ))}
+    <div
+      className={`w-full  ${
+        fixedPosition
+          ? "fixed bottom-0 left-0 right-0  h-screen flex items-end bg-black/40 md:bg-transparent  md:static md:inline-block md:h-auto "
+          : "static inline-block "
+      } `}
+    >
+      <div
+        className={`${
+          fixedPosition && "px-4 md:px-0"
+        } w-full rounded-md py-3 bg-white  mt-2.5 duration-100 relative`}
+      >
+        <button
+          id="comment-close-button"
+          onClick={handleCloseComment}
+          className={`${
+            fixedPosition
+              ? "absolute md:hidden right-2 -top-10 text-white font-semibold bg-black/60   px-2 py-1 rounded-sm border border-gray-200"
+              : "hidden"
+          }`}
+        >
+          Close
+        </button>
+        <form onSubmit={handleSubmit(submit)}>
+          <div className=" flex items-end ">
+            <textarea
+              type="text"
+              placeholder="Add a comment"
+              className=" py-2  border-b-2 border-gray-300 focus:border-gray-400 duration-100 outline-none w-full resize-none "
+              {...register("comment", { required: true })}
+              style={{ fieldSizing: "content" }}
+            ></textarea>
+            <button className="ml-2 mb-1 outline-gray-300" type="submit">
+              <svg
+                className="w-7 h-7 "
+                xmlns="http://www.w3.org/2000/svg"
+                height="24px"
+                viewBox="0 -960 960 960"
+                width="24px"
+                fill="#6a7282"
+              >
+                <path d="M120-160v-640l760 320-760 320Zm80-120 474-200-474-200v140l240 60-240 60v140Zm0 0v-400 400Z" />
+              </svg>
+            </button>
+          </div>
+        </form>
+        <div>
+          <ul
+            className={`mt-1.5 scrollable-content overflow-auto ${
+              fixedPosition ? "h-[70lvh] md:max-h-60 " : " max-h-60 "
+            } `}
+          >
+            {postComments.length > 0 &&
+              userDetails &&
+              [...postComments]
+                .sort((a, b) => {
+                  return new Date(b.$updatedAt) - new Date(a.$updatedAt);
+                })
+                .filter((comment) => comment.userId === userDetails.$id)
+                .map((comment) => (
+                  <li
+                    key={comment.$id}
+                    className="flex gap-2 items-center mt-4 mb-1 w-full "
+                  >
+                    <Comment
+                      comment={comment}
+                      handleDeleteComment={(commentId) =>
+                        handleDeleteComment(commentId)
+                      }
+                      handleEditComment={(commentId, newComment) =>
+                        handleEditComment(commentId, newComment)
+                      }
+                    />
+                  </li>
+                ))}
+            {postComments.length > 0 &&
+              [...postComments]
+                .sort((a, b) => {
+                  return new Date(b.$updatedAt) - new Date(a.$updatedAt);
+                })
+                .filter((comment) =>
+                  userDetails ? comment.userId !== userDetails.$id : true
+                )
+                .map((comment) => (
+                  <li
+                    key={comment.$id}
+                    className="flex gap-2 items-center mt-4 mb-1 w-full "
+                  >
+                    <Comment
+                      comment={comment}
+                      handleDeleteComment={(commentId) =>
+                        handleDeleteComment(commentId)
+                      }
+                      handleEditComment={(commentId, newComment) =>
+                        handleEditComment(commentId, newComment)
+                      }
+                    />
+                  </li>
+                ))}
 
-          {postComments.length < 1 && (
-            <p className="text-gray-400 text-sm ">No comments yet</p>
-          )}
-        </ul>
+            {postComments.length < 1 && (
+              <p className="text-gray-400 text-sm ">No comments yet</p>
+            )}
+          </ul>
+        </div>
       </div>
     </div>
   );
