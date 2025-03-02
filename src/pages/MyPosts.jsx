@@ -3,6 +3,7 @@ import databaseService from "../appwrite/database";
 import { Container, Loading, PostCard } from "../components";
 import { useSelector } from "react-redux";
 import { Query } from "appwrite";
+import { Link } from "react-router-dom";
 
 function MyPosts() {
   const [allPosts, setAllPosts] = useState([]);
@@ -47,6 +48,22 @@ function MyPosts() {
           </article>
         </div>
       </Container>
+
+      <Link
+        to="/add-post"
+        className="md:hidden fixed bottom-5 right-6 rounded-full"
+      >
+        <button className=" p-2 rounded-full bg-blue-500 hover:bg-blue-400 active:bg-blue-300">
+          <svg
+            className="w-10 h-10"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 -960 960 960"
+            fill="#ffffff"
+          >
+            <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
+          </svg>
+        </button>
+      </Link>
     </div>
   );
 }

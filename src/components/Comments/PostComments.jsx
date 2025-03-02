@@ -86,7 +86,7 @@ export default function PostComments({
     <div
       className={`w-full  mt-2.5    ${
         fixedPosition
-          ? "fixed bottom-0 left-0 right-0  h-screen flex items-end bg-black/50 md:bg-transparent  md:static md:inline-block md:h-auto "
+          ? "fixed z-20 bottom-0 left-0 right-0  h-screen flex items-end bg-black/50 md:bg-transparent  md:static md:inline-block md:h-auto "
           : "static inline-block  py-3"
       } `}
     >

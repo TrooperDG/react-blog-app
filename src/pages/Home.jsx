@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import databaseService from "../appwrite/database";
 import { Container, Loading, PostCard } from "../components";
+import { Link } from "react-router-dom";
 
 function Home() {
   const [allPosts, setAllPosts] = useState([]);
@@ -32,9 +33,10 @@ function Home() {
   if (allPosts.length === 0) {
     return <h1 className="text-5xl">No post available</h1>;
   }
+  console.log("oiii");
 
   return (
-    <div className="w-full  py-2  ">
+    <div className="w-full py-2  bg-red-300">
       <Container>
         <div className="flex justify-center">
           <article>
@@ -49,6 +51,21 @@ function Home() {
           </article>
         </div>
       </Container>
+      <Link
+        to="/add-post"
+        className="md:hidden fixed bottom-5 right-6 rounded-full"
+      >
+        <button className=" p-2 rounded-full bg-blue-500 hover:bg-blue-400 active:bg-blue-300">
+          <svg
+            className="w-10 h-10"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 -960 960 960"
+            fill="#ffffff"
+          >
+            <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
+          </svg>
+        </button>
+      </Link>
     </div>
   );
 }
