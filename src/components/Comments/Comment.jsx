@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getTimeAgo } from "../../utility";
 import { useSelector } from "react-redux";
 import databaseService from "../../appwrite/database";
@@ -10,10 +10,6 @@ function Comment({ comment, handleDeleteComment, handleEditComment }) {
   const [isEdit, setIsEdit] = useState(false);
   const [editComment, setEditComment] = useState(comment.comment);
   const [commentCreator, setCommentCreator] = useState(null);
-
-  databaseService
-    .getUser(comment.userId, [Query.select(["username", "avatar"])])
-    .then((data) => setCommentCreator(data));
 
   const userData = useSelector((state) => state.auth.userData);
   const isAuthor =
@@ -37,6 +33,13 @@ function Comment({ comment, handleDeleteComment, handleEditComment }) {
     }
     setIsEdit(false);
   }
+
+  useEffect(() => {
+    if (!comment?.userId) return;
+    databaseService
+      .getUser(comment.userId, [Query.select(["username", "avatar"])])
+      .then((data) => setCommentCreator(data));
+  }, [comment?.userId]);
   return (
     <>
       <div className=" w-8 h-8 ">

@@ -18,6 +18,7 @@ export default function PostComments({ currentPostId, handleCommentCount }) {
     setPostComments(comments.documents);
   }
   async function submit(data) {
+    setValue("comment", ""); // just to make it faster
     let newPostComments = postComments;
     data.comment = data.comment.trim();
     const comment = await databaseService.createComment({
@@ -36,7 +37,7 @@ export default function PostComments({ currentPostId, handleCommentCount }) {
     // await databaseService.updateUser(userDetails.$id, {
     //   commentIds: newPostCommentIds,
     // });
-    setValue("comment", "");
+
     handleCommentCount(newPostComments.length);
   }
 
@@ -103,11 +104,13 @@ export default function PostComments({ currentPostId, handleCommentCount }) {
       </form>
       <div>
         <ul className="mt-1.5 scrollable-content overflow-auto max-h-60 ">
-          {postComments.length > 0 ? (
+          {postComments.length > 0 &&
+            userDetails &&
             [...postComments]
               .sort((a, b) => {
                 return new Date(b.$updatedAt) - new Date(a.$updatedAt);
               })
+              .filter((comment) => comment.userId === userDetails.$id)
               .map((comment) => (
                 <li
                   key={comment.$id}
@@ -123,8 +126,33 @@ export default function PostComments({ currentPostId, handleCommentCount }) {
                     }
                   />
                 </li>
-              ))
-          ) : (
+              ))}
+          {postComments.length > 0 &&
+            [...postComments]
+              .sort((a, b) => {
+                return new Date(b.$updatedAt) - new Date(a.$updatedAt);
+              })
+              .filter((comment) =>
+                userDetails ? comment.userId !== userDetails.$id : true
+              )
+              .map((comment) => (
+                <li
+                  key={comment.$id}
+                  className="flex gap-2 items-center mt-4 mb-1 w-full "
+                >
+                  <Comment
+                    comment={comment}
+                    handleDeleteComment={(commentId) =>
+                      handleDeleteComment(commentId)
+                    }
+                    handleEditComment={(commentId, newComment) =>
+                      handleEditComment(commentId, newComment)
+                    }
+                  />
+                </li>
+              ))}
+
+          {postComments.length < 1 && (
             <p className="text-gray-400 text-sm ">No comments yet</p>
           )}
         </ul>
