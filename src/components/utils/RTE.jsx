@@ -12,7 +12,7 @@ function RTE({ name, label, control, defaultValue = "" }) {
     () => ({
       readonly: false, // all options from https://xdsoft.net/jodit/docs/,
       // placeholder: "Start typings...",
-      height: 500,
+      height: 240,
     }),
     [defaultValue]
   );

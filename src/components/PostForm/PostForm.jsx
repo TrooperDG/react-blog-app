@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import databaseService from "../../appwrite/database";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RTE, Input, Select, Button, Loading } from "../index";
 import imageCompression from "browser-image-compression";
@@ -84,13 +84,34 @@ function PostForm({ post }) {
       setImagePreview(URL.createObjectURL(file));
     }
   }
+  async function deletePost() {
+    await databaseService.deletePost(post.$id).then((status) => {
+      if (status) {
+        databaseService.deleteFile(post.feturedImage);
+      }
+    });
+  }
 
   return (
     <form
       onSubmit={handleSubmit(submit)}
-      className="flex flex-wrap justify-center w-full "
+      className="flex flex-wrap justify-center w-full px-2  "
     >
-      <ul className="px-2 lg:flex gap-4 lg:w-full  ">
+      <div className="w-full flex justify-end mb-2 gap-2">
+        <Link to="/my-posts">
+          <Button bgColor="bg-amber-600">Cancel</Button>
+        </Link>
+        {post ? (
+          <Link onClick={deletePost} to="/my-posts">
+            <Button bgColor="bg-red-500">Delete</Button>
+          </Link>
+        ) : (
+          <Link to="/my-posts">
+            <Button bgColor="bg-red-500">Delete</Button>
+          </Link>
+        )}
+      </div>
+      <ul className="lg:flex gap-4 lg:w-full  ">
         <li className=" order-2 lg:mt-7">
           <input
             label="Featured Image :"

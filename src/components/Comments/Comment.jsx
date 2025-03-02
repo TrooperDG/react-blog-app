@@ -139,7 +139,7 @@ function Comment({ comment, handleDeleteComment, handleEditComment }) {
             >
               <button
                 id="edit-comment"
-                className=" p-1 mr-2  hover:bg-gray-100 active:bg-gray-100 outline-gray-300"
+                className=" p-1 mr-4  hover:bg-gray-100 active:bg-gray-100 outline-gray-300"
                 onClick={handleEdit}
               >
                 <svg

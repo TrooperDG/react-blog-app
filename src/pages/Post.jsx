@@ -83,12 +83,12 @@ function Post() {
               </button>
               {isEditDeleteOpen && (
                 <div
-                  className={`rounded-sm overflow-hidden bg-gray-50 duration-100  absolute top-0 -left-20 `}
+                  className={`rounded-sm overflow-hidden bg-gray-50 duration-100  absolute top-0 -left-24 `}
                 >
                   <Link to={`/edit-post/${post.$id}`}>
                     <button
                       id="edit-comment "
-                      className=" p-1 mr-2  hover:bg-gray-100 active:bg-gray-100 outline-gray-300"
+                      className=" p-1 mr-4  hover:bg-gray-100 active:bg-gray-100 outline-gray-300"
                     >
                       <svg
                         className="w-6 h-6"
