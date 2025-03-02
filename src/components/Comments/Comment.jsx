@@ -135,7 +135,7 @@ function Comment({ comment, handleDeleteComment, handleEditComment }) {
           )}
           {isEditDeleteOpen && (
             <div
-              className={`rounded-sm overflow-hidden bg-gray-50 duration-100  absolute top-0 -left-20 `}
+              className={`rounded-sm overflow-hidden bg-gray-50 duration-100  absolute top-0 -left-24 `}
             >
               <button
                 id="edit-comment"

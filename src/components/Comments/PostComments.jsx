@@ -86,7 +86,7 @@ export default function PostComments({
     <div
       className={`w-full  ${
         fixedPosition
-          ? "fixed bottom-0 left-0 right-0  h-screen flex items-end bg-black/40 md:bg-transparent  md:static md:inline-block md:h-auto "
+          ? "fixed bottom-0 left-0 right-0  h-screen flex items-end bg-black/50 md:bg-transparent  md:static md:inline-block md:h-auto "
           : "static inline-block "
       } `}
     >
@@ -100,9 +100,10 @@ export default function PostComments({
           onClick={handleCloseComment}
           className={`${
             fixedPosition
-              ? "absolute md:hidden right-2 -top-10 text-white font-semibold bg-black/60   px-2 py-1 rounded-sm border border-gray-200"
+              ? "absolute md:hidden right-2 -top-12 text-white font-semibold   px-2 py-1 rounded-sm"
               : "hidden"
           }`}
+          style={{ textShadow: "0px 0px 4px black" }}
         >
           Close
         </button>
