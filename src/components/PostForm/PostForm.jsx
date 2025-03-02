@@ -101,12 +101,8 @@ function PostForm({ post }) {
         <Link to="/my-posts">
           <Button bgColor="bg-amber-600">Cancel</Button>
         </Link>
-        {post ? (
+        {post && (
           <Link onClick={deletePost} to="/my-posts">
-            <Button bgColor="bg-red-500">Delete</Button>
-          </Link>
-        ) : (
-          <Link to="/my-posts">
             <Button bgColor="bg-red-500">Delete</Button>
           </Link>
         )}

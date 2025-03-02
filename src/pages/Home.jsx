@@ -33,10 +33,9 @@ function Home() {
   if (allPosts.length === 0) {
     return <h1 className="text-5xl">No post available</h1>;
   }
-  console.log("oiii");
 
   return (
-    <div className="w-full py-2  bg-red-300">
+    <div className="w-full py-2  ">
       <Container>
         <div className="flex justify-center">
           <article>

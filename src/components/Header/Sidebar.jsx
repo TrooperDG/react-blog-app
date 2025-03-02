@@ -1,20 +1,35 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Sidebar({ navItems = [], navRef }) {
   // const navRef = useRef(null);
   const navigate = useNavigate();
 
+  function handleCloseSidebar() {
+    navRef.current.style.left = "-12.5rem";
+  }
+  function clickOutside(event) {
+    if (navRef.current && !navRef.current.contains(event.target)) {
+      handleCloseSidebar(); // Close sidebar when clicking outside
+    }
+  }
+  useEffect(() => {
+    document.addEventListener("mousedown", clickOutside);
+    return () => {
+      document.removeEventListener("mousedown", clickOutside);
+    };
+  }, []);
+
   return (
     <ul
       ref={navRef}
-      className="fixed  py-3 bg-slate-700 duration-150 top-0 h-screen w-50 -left-50 md:hidden"
+      className="fixed  pt-3 pb-5 rounded-br-lg bg-slate-800 duration-150 top-0  w-40 -left-50 md:hidden"
       // style={{ left: "-55vw" }}
     >
-      <li>
+      <li className="border-b border-gray-400">
         <button
-          onClick={() => (navRef.current.style.left = "-12.5rem")}
-          className="text-white inline-block px-4 py-2 mb-2 active:bg-slate-600"
+          onClick={handleCloseSidebar}
+          className="text-white inline-block px-4 py-1.5 mb-2 active:bg-slate-600"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -31,25 +46,17 @@ function Sidebar({ navItems = [], navRef }) {
       {navItems.map((item) =>
         item.active ? (
           <li
+            onClick={() => {
+              handleCloseSidebar();
+              navigate(item.path);
+            }}
             key={item.name}
-            className=" duration-200 hover:bg-blue-200  hover:text-gray-800 hover:pl-0.5  text-white active:bg-blue-200"
+            className=" duration-200 border-b-2 border-slate-800 hover:bg-slate-700  hover:border-gray-400 hover:pl-0.5  text-white active:bg-blue-200"
           >
-            <button
-              onClick={() => navigate(item.path)}
-              className=" text-lg px-6 py-2 "
-            >
-              {item.name}
-            </button>
+            <button className=" text-lg px-6 py-2 ">{item.name}</button>
           </li>
         ) : null
       )}
-      {/* {authStatus && (
-              <>
-                <li className=" duration-200 hover:bg-blue-200  hover:text-gray-800  text-white active:bg-blue-200">
-                  <LogoutBtn className="text-lg px-6 py-2" />
-                </li>
-              </>
-            )} */}
     </ul>
   );
 }

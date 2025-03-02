@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import LogoutBtn from "./LogoutBtn";
@@ -62,8 +62,24 @@ function UserLogo() {
     }
   }
   function handleCloseUserBar() {
-    navRef.current.style.right = "-12.5rem";
+    if (window.innerWidth >= 768) {
+      navRef.current.style.display = "none";
+    } else {
+      navRef.current.style.right = "-12.5rem";
+    }
   }
+  function clickOutside(event) {
+    if (navRef.current && !navRef.current.contains(event.target)) {
+      handleCloseUserBar(); // Close sidebar when clicking outside
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener("mousedown", clickOutside);
+    return () => {
+      document.removeEventListener("mousedown", clickOutside);
+    };
+  }, []);
 
   return (
     <div className="flex align-middle cursor-pointer relative ">
@@ -146,13 +162,13 @@ function UserLogo() {
       {/*=========================== for mobile view=========================*/}
       <ul
         ref={navRef}
-        className="fixed inline-block  py-3 bg-slate-700 duration-150 top-0 -right-50 h-screen w-50  md:hidden md:absolute md:top-13 md:right-0 md:w-50 md:h-auto md:pb-4 md:rounded-b-lg"
+        className="fixed inline-block  pt-3 pb-5 bg-slate-800 duration-150 top-0 -right-50 w-40  md:hidden md:absolute md:top-13 md:right-0 md:w-50 md:h-auto md:pb-4 rounded-bl-lg md:rounded-b-lg"
         // style={{ right: "-55vw" }}
       >
-        <li className="flex justify-end md:hidden">
+        <li className="flex justify-end border-b border-gray-400 md:hidden">
           <button
             onClick={handleCloseUserBar}
-            className="text-white  inline-block px-4 py-2 mb-2 active:bg-slate-600"
+            className="text-white  inline-block px-4 py-1.5 mb-2 active:bg-slate-600"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -169,22 +185,24 @@ function UserLogo() {
         {accountItems.map((item) =>
           item.active ? (
             <li
+              onClick={() => {
+                handleCloseUserBar();
+                navigate(item.path);
+              }}
               key={item.name}
-              className=" duration-200 hover:bg-blue-200  hover:text-gray-800 hover:pl-0.5  text-white active:bg-blue-200 "
+              className=" duration-200 border-b-2 border-slate-800 hover:bg-slate-700 hover:border-gray-400   hover:pl-0.5  text-white active:bg-blue-200 "
             >
-              <button
-                onClick={() => navigate(item.path)}
-                className=" text-lg px-6 py-2 "
-              >
-                {item.name}
-              </button>
+              <button className=" text-lg px-6 py-2 ">{item.name}</button>
             </li>
           ) : null
         )}
         {authStatus && (
           <>
-            <li className=" duration-200 hover:bg-blue-200  hover:text-gray-800 hover:pl-0.5  text-white active:bg-blue-200">
-              <LogoutBtn className="text-lg px-6 py-2" />
+            <li className=" duration-200 border-b-2 border-slate-800 hover:bg-slate-700  hover:border-gray-400 hover:pl-0.5  text-white active:bg-blue-200">
+              <LogoutBtn
+                onClick={() => handleCloseUserBar}
+                className="text-lg px-6 py-2"
+              />
             </li>
           </>
         )}
