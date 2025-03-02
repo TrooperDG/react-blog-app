@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 
 export default function PostComments({
-  isView = false,
   currentPostId,
   handleCommentCount,
   fixedPosition,
@@ -133,9 +132,9 @@ export default function PostComments({
         </form>
         <div>
           <ul
-            className={`mt-1.5 scrollable-content overflow-auto bg-white   ${
-              isView && "h-auto"
-            }  ${!isView && fixedPosition && "h-[60vh] md:max-h-60 "} `}
+            className={`mt-1.5 scrollable-content overflow-auto bg-white    ${
+              fixedPosition ? "h-[60vh] md:h-auto md:max-h-60 " : "h-auto"
+            } `}
           >
             {postComments.length > 0 &&
               userDetails &&

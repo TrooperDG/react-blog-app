@@ -38,13 +38,13 @@ function Header() {
     <header className="py-3 shadow-black/30 shadow-lg fixed top-0 left-0 right-0 z-40 bg-slate-800 ">
       <Container>
         <nav className="flex mx-4">
-          <div className="mr-2 w-10 md:hidden p-0.5 ">
+          <div className="mr-2.5 w-10 md:hidden p-0.5 pl-0">
             <button
               onClick={() => (navRef.current.style.left = "0px")}
               className="text-white active:bg-slate-600"
             >
               <svg
-                className="w-8"
+                className="w-8 h-8"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 -960 960 960"
                 fill="#e8eaed"

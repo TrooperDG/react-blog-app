@@ -134,7 +134,6 @@ function Post() {
               <span>{commentCount <= 1 ? "Comment" : "Comments"}</span>
             </button>
             <PostComments
-              isView={true}
               currentPostId={postId}
               handleCommentCount={(count) => setCommentCount(count)}
             />
