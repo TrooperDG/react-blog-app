@@ -170,3 +170,28 @@ export default BlogCard;
 //   }
 
 // }
+
+// {
+//   "routes": [
+//     {
+//       "src": "/(.*\\.js)",
+//       "headers": {
+//         "Content-Type": "application/javascript"
+//       }
+//     },
+//     {
+//       "src": "/(.*\\.css)",
+//       "headers": {
+//         "Content-Type": "text/css"
+//       }
+//     },
+//     {
+//       "src": "/.*",
+//       "dest": "/index.html"
+//     },
+//     {
+//       "src": "/images/(.*)",
+//       "dest": "/public/images/$1"
+//     }
+//   ]
+// }

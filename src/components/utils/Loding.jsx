@@ -4,7 +4,7 @@ import styled from "styled-components";
 const Loading = () => {
   return (
     <StyledWrapper>
-      <div className="bg-white/40 w-full h-screen top-0 left-0 fixed z-10">
+      <div className="bg-white/40  fixed inset-0 z-10">
         <div className="loader" />
       </div>
     </StyledWrapper>

@@ -12,7 +12,7 @@ import parse from "html-react-parser";
 import { useSelector, useDispatch } from "react-redux";
 import { addUserDetails } from "../store/userSlice";
 import { Query } from "appwrite";
-import { PostComments } from ".";
+import { PostComments, ShareModal } from ".";
 import { debounce } from "../utility";
 
 function PostCard({
@@ -28,6 +28,7 @@ function PostCard({
   const [liked, setLiked] = useState(false);
   const [creatorData, setCreatorData] = useState(null);
   const [isCommentOpen, setIsCommentOpen] = useState(false);
+  const [isShare, setIsShare] = useState(false);
   const [likeCount, setLikeCount] = useState(likedUserIds.length);
   const [commentCount, setCommentCount] = useState(commentIds.length);
   // const [commentUserIds, setCommentUserIds] = useState([]);
@@ -136,16 +137,33 @@ function PostCard({
         {/* Image */}
         <Link to={`/post/${$id}`}>
           <div className={`w-full flex justify-center mb-3  `}>
-            {featuredImage && (
+            {featuredImage ? (
               <img
                 src={databaseService.getFilePreview(featuredImage)}
                 alt="Blog"
                 className={` ${
                   isView
-                    ? " max-h-[50vh] object-contain "
-                    : "object-cover max-h-90 md: md:max-h-120 "
-                } rounded-lg   w-full`}
+                    ? " h-[50vh] object-contain "
+                    : "object-cover max-h-90 md: md:max-h-120 w-full "
+                } rounded-lg `}
               />
+            ) : (
+              isView && (
+                <div className="">
+                  <svg
+                    className="w-50 h-50 "
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 -960 960 960"
+                    fill="#6a7282"
+                  >
+                    <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm40-80h480L570-480 450-320l-90-120-120 160Zm-40 80v-560 560Zm140-360q25 0 42.5-17.5T400-620q0-25-17.5-42.5T340-680q-25 0-42.5 17.5T280-620q0 25 17.5 42.5T340-560Z" />
+                  </svg>
+                  <h1 className="ml-2 text-gray-600 font-semibold text-lg">
+                    {" "}
+                    You have no Post Image
+                  </h1>
+                </div>
+              )
             )}
           </div>
         </Link>
@@ -175,7 +193,10 @@ function PostCard({
               <span>{commentCount <= 1 ? "Comment" : "Comments"}</span>
             </button>
           )}
-          <button className="flex items-center gap-1 hover:text-green-500 transition outline-gray-200">
+          <button
+            className="flex items-center gap-1 hover:text-green-500 transition outline-gray-200"
+            onClick={() => setIsShare(true)}
+          >
             <FaShare /> <span>Share</span>
           </button>
         </div>
@@ -189,6 +210,18 @@ function PostCard({
             fixedPosition={true}
             currentPostId={$id}
             handleCommentCount={(count) => setCommentCount(count)}
+          />
+        )}
+
+        {isShare && (
+          <ShareModal
+            url={
+              isView
+                ? window.location.href
+                : window.location.href + "post/" + $id
+            }
+            title={title}
+            onCLose={() => setIsShare(false)}
           />
         )}
       </div>

@@ -50,7 +50,7 @@ function Post() {
 
   if (loading) return <Loading />;
   return post ? (
-    <div className="py-5 ">
+    <div className="pt-1 md:py-5 ">
       <Container>
         {/* <div className="w-full flex justify-center mb-4 relative border rounded-xl p-2">
           <img
@@ -63,7 +63,7 @@ function Post() {
           <h1 className="text-2xl font-bold text-blue-500">{post.title}</h1>
         </div> */}
         {/* <div className="browser-css text-lg">{parse(post.content)}</div> */}
-        <div className=" relative ">
+        <div className=" relative m-1  md:mx-4">
           {/* Edit Delete options */}
           {isAuthor && (
             <div className=" absolute right-2 top-5 md:right-8">
@@ -126,7 +126,7 @@ function Post() {
           <PostCard {...post} isView={true} />
           <div
             id="comments"
-            className=" relative outline-1 bg-white outline-gray-200 rounded-md pt-3 mt-2 px-4 md:px-10"
+            className=" relative outline-1 bg-white outline-gray-200 rounded-md py-4 mt-2 px-4 md:px-10"
           >
             <button className="flex items-center gap-1 text-xs  text-gray-500  transition absolute left-3 top-3 md:left-10 outline-gray-300">
               <span className="">{commentCount > 0 && commentCount}</span>

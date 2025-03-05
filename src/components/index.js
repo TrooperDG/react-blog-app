@@ -17,6 +17,7 @@ import UserLogo from "./Header/UserLogo";
 import UserAccount from "./user-account/UserAccount";
 import UserForm from "./user-account/UserForm";
 import PostComments from "./Comments/PostComments";
+import ShareModal from "./Share/ShareModal";
 
 export {
   Header,
@@ -38,4 +39,5 @@ export {
   UserAccount,
   UserForm,
   PostComments,
+  ShareModal,
 };
