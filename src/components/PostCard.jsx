@@ -130,7 +130,7 @@ function PostCard({
               </svg>
             )}
           </div>
-          <span className="text-gray-700 font-semibold">
+          <span className="text-gray-700 font-semibold truncate">
             {creatorData && creatorData.username}
           </span>
         </div>
@@ -143,7 +143,7 @@ function PostCard({
                 alt="Blog"
                 className={` ${
                   isView
-                    ? " h-[50vh] object-contain "
+                    ? " max-h-[50vh] object-contain "
                     : "object-cover max-h-90 md: md:max-h-120 w-full "
                 } rounded-lg `}
               />

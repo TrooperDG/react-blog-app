@@ -5,7 +5,7 @@ function Input({ label, type = "text", className = "", ref, ...props }) {
   return (
     <div className={"w-full "}>
       {label && (
-        <label className="block mb-1" htmlFor={id}>
+        <label className="block mb-1 text-gray-600 font-semibold" htmlFor={id}>
           {label}
         </label>
       )}

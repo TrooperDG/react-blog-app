@@ -198,11 +198,14 @@ function UserLogo() {
         )}
         {authStatus && (
           <>
-            <li className=" duration-200 border-b-2 border-slate-800 hover:bg-slate-700  hover:border-gray-400 hover:pl-0.5  text-white active:bg-blue-200">
-              <LogoutBtn
-                onClick={() => handleCloseUserBar}
-                className="text-lg px-6 py-2"
-              />
+            <li
+              onClick={() => {
+                handleCloseUserBar();
+                navigate("/");
+              }}
+              className=" duration-200 border-b-2 border-slate-800 hover:bg-slate-700  hover:border-gray-400 hover:pl-0.5  text-white active:bg-blue-200"
+            >
+              <LogoutBtn className="text-lg px-6 py-2" />
             </li>
           </>
         )}

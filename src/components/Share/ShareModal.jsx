@@ -97,13 +97,13 @@ function ShareModal({ url, title, onCLose }) {
         {/* Scrollable Share Icons */}
         <div className="relative flex items-center my-4 ">
           <button
-            className="absolute left-0 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 shadow-md p-2 rounded-full -ml-4 z-10"
+            className="absolute left-0 mb-2 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 shadow-md p-2 rounded-full -ml-4 z-10"
             onClick={scrollLeft}
           >
             <FaChevronLeft size={14} />
           </button>
           <button
-            className="absolute right-0 bg-gray-100 hover:bg-gray-200 active:bg-gray-300  shadow-md p-2 rounded-full -mr-4 z-10"
+            className="absolute right-0 mb-2 bg-gray-100 hover:bg-gray-200 active:bg-gray-300  shadow-md p-2 rounded-full -mr-4 z-10"
             onClick={scrollRight}
           >
             <FaChevronRight size={14} />
@@ -152,7 +152,7 @@ function ShareModal({ url, title, onCLose }) {
             <LinkedinShareButton url={url} title={title}>
               <FaLinkedin
                 size={40}
-                className="text-blue-700 duration-100 hover:scale-125"
+                className="text-blue-500 duration-100 hover:scale-125"
               />
             </LinkedinShareButton>
 
