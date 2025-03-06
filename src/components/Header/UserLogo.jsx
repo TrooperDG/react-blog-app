@@ -1,13 +1,16 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import LogoutBtn from "./LogoutBtn";
 import databaseService from "../../appwrite/database";
+import { motion, AnimatePresence } from "framer-motion";
 
 function UserLogo() {
   const userDetails = useSelector((state) => state.user.userDetails);
   const authStatus = useSelector((state) => state.auth.status);
-
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [isOpen, setIsOpen] = useState(false);
+  const userSectonRef = useRef(null);
   let userName = "Sign in";
   const navigate = useNavigate();
   if (userDetails) {
@@ -17,8 +20,6 @@ function UserLogo() {
         : (userName = userDetails.username);
     }
   }
-  // const navRefMobile = useRef(null);
-  const navRef = useRef(null);
   const accountItems = [
     {
       name: "My Account",
@@ -42,35 +43,12 @@ function UserLogo() {
     },
   ];
 
-  function handleNavigate() {
-    if (userDetails) {
-      navigate("/");
-    } else {
-      navigate("/login");
-    }
-  }
-
-  function handleOpenUserBar() {
-    if (window.innerWidth >= 768) {
-      if (navRef.current.style.display == "inline-block") {
-        navRef.current.style.display = "none";
-      } else {
-        navRef.current.style.display = "inline-block";
-      }
-    } else {
-      navRef.current.style.right = "0px";
-    }
-  }
-  function handleCloseUserBar() {
-    if (window.innerWidth >= 768) {
-      navRef.current.style.display = "none";
-    } else {
-      navRef.current.style.right = "-12.5rem";
-    }
-  }
   function clickOutside(event) {
-    if (navRef.current && !navRef.current.contains(event.target)) {
-      handleCloseUserBar(); // Close sidebar when clicking outside
+    if (
+      userSectonRef.current &&
+      !userSectonRef.current.contains(event.target)
+    ) {
+      setIsOpen(false); // Close sidebar when clicking outside
     }
   }
 
@@ -80,19 +58,36 @@ function UserLogo() {
       document.removeEventListener("mousedown", clickOutside);
     };
   }, []);
+  useEffect(() => {
+    function handleResize() {
+      setIsMobile(window.innerWidth < 768);
+    }
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
-    <div className="flex align-middle cursor-pointer relative ">
+    <div
+      ref={userSectonRef}
+      className="flex align-middle cursor-pointer relative "
+    >
       <div className="text-white mr-2">
         <p className="text-sm font-bold">Hello!</p>
         <p
-          onClick={handleNavigate}
+          onClick={() => {
+            userDetails ? navigate("/my-account") : navigate("/login");
+          }}
           className="leading-4 hover:underline duration-200 "
         >
           {userName}
         </p>
       </div>
-      <div onClick={handleOpenUserBar} className="w-10 h-10 rounded-full ">
+      <div
+        onClick={() => {
+          isMobile ? setIsOpen(true) : setIsOpen((prev) => !prev);
+        }}
+        className="w-10 h-10 rounded-full "
+      >
         {userDetails && userDetails.avatar ? (
           <img
             src={databaseService.getFilePreview(userDetails.avatar)}
@@ -160,7 +155,102 @@ function UserLogo() {
       </ul> */}
 
       {/*=========================== for mobile view=========================*/}
-      <ul
+
+      {isMobile ? (
+        <ul
+          className={`fixed inline-block  pt-3 pb-5 bg-slate-800 duration-150 top-0 ${
+            isOpen ? "right-0" : "-right-50"
+          } w-40 rounded-bl-lg`}
+          // style={{ right: "-55vw" }}
+        >
+          <li className="flex justify-end border-b border-gray-400 ">
+            <button
+              onClick={() => setIsOpen(false)}
+              className="text-white  inline-block px-4 py-1.5 mb-2 active:bg-slate-600"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="32px"
+                viewBox="0 -960 960 960"
+                width="32px"
+                fill="#e8eaed"
+              >
+                <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+              </svg>
+            </button>
+          </li>
+
+          {accountItems.map((item) =>
+            item.active ? (
+              <li
+                onClick={() => {
+                  setIsOpen(false);
+                  navigate(item.path);
+                }}
+                key={item.name}
+                className=" duration-200 border-b-2 border-slate-800 hover:bg-slate-700 hover:border-gray-400   hover:pl-0.5  text-white active:bg-blue-200 "
+              >
+                <button className=" text-lg px-6 py-2 ">{item.name}</button>
+              </li>
+            ) : null
+          )}
+          {authStatus && (
+            <>
+              <li
+                onClick={() => {
+                  setIsOpen(false);
+                  navigate("/");
+                }}
+                className=" duration-200 border-b-2 border-slate-800 hover:bg-slate-700  hover:border-gray-400 hover:pl-0.5  text-white active:bg-blue-200"
+              >
+                <LogoutBtn className="text-lg px-6 py-2" />
+              </li>
+            </>
+          )}
+        </ul>
+      ) : (
+        <AnimatePresence>
+          {isOpen && (
+            <motion.ul
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ type: "tween", duration: 0.2, ease: "easeInOut" }}
+              className={` pt-3 pb-5 bg-slate-800 duration-150  absolute top-13 right-0 w-50 h-auto  rounded-b-lg `}
+            >
+              {accountItems.map((item) =>
+                item.active ? (
+                  <li
+                    onClick={() => {
+                      setIsOpen(false);
+                      navigate(item.path);
+                    }}
+                    key={item.name}
+                    className=" duration-200 border-b-2 border-slate-800 hover:bg-slate-700 hover:border-gray-400   hover:pl-0.5  text-white active:bg-blue-200 "
+                  >
+                    <button className=" text-lg px-6 py-2 ">{item.name}</button>
+                  </li>
+                ) : null
+              )}
+              {authStatus && (
+                <>
+                  <li
+                    onClick={() => {
+                      setIsOpen(false);
+                      navigate("/");
+                    }}
+                    className=" duration-200 border-b-2 border-slate-800 hover:bg-slate-700  hover:border-gray-400 hover:pl-0.5  text-white active:bg-blue-200"
+                  >
+                    <LogoutBtn className="text-lg px-6 py-2" />
+                  </li>
+                </>
+              )}
+            </motion.ul>
+          )}
+        </AnimatePresence>
+      )}
+
+      {/* <ul
         ref={navRef}
         className="fixed inline-block  pt-3 pb-5 bg-slate-800 duration-150 top-0 -right-50 w-40  md:hidden md:absolute md:top-13 md:right-0 md:w-50 md:h-auto md:pb-4 rounded-bl-lg md:rounded-b-lg"
         // style={{ right: "-55vw" }}
@@ -209,7 +299,7 @@ function UserLogo() {
             </li>
           </>
         )}
-      </ul>
+      </ul> */}
     </div>
   );
 }

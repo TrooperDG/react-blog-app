@@ -7,11 +7,13 @@ import { useForm } from "react-hook-form";
 import { login as storeLogin } from "../store/authSlice";
 import { addUserDetails } from "../store/userSlice.js";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { BiError } from "react-icons/bi";
 import databaseService from "../appwrite/database.js";
 
 function Signup() {
   const [serverError, setServerError] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [alreadyExists, setAlreadyExists] = useState(false);
   const {
     register,
     handleSubmit,
@@ -26,7 +28,7 @@ function Signup() {
     delete data.confirmPassword;
     try {
       const createdUser = await authService.createAccount(data);
-      if (createdUser) {
+      if (createdUser && createdUser !== 409) {
         const userData = await authService.getCurrentUser();
         if (userData) {
           dispatch(storeLogin(createdUser));
@@ -42,7 +44,7 @@ function Signup() {
           navigate("/");
         }
       } else {
-        setServerError(true);
+        createdUser === 409 ? setAlreadyExists(true) : setServerError(true);
       }
     } catch (error) {
       console.log(error);
@@ -57,18 +59,19 @@ function Signup() {
   return (
     <div className="flex items-center justify-center w-full">
       <div
-        className={`mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black/10 relative`}
+        className={`mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black/10 `}
       >
         {/*for server related errors*/}
         {serverError && (
-          <div className="absolute bg-black/50 rounded-lg inset-0 z-10 flex justify-center items-center">
-            <div className=" bg-white max-w-full flex flex-col items-center p-4 rounded-lg">
+          <div className="fixed inset-0 bg-black/50 rounded-lg z-10 flex justify-center items-center">
+            <div className=" bg-white max-w-md flex flex-col items-center p-4 rounded-lg">
               <h1 className="text-lg font-semibold text-red-500 mb-1">
                 Something went wrong
               </h1>
               <p className="text-gray-700 font-semibold">
                 Could not create account
               </p>
+              <p className="text-sm"> Server error</p>
               <Button onClick={handleRetry} className="bg-green-600 mt-4">
                 Retry
               </Button>
@@ -93,7 +96,15 @@ function Signup() {
           </Link>
         </p>
         <form onSubmit={handleSubmit(serverSignup)} className="mt-8">
-          <div className="space-y-5">
+          <div className="space-y-5" onFocus={() => setAlreadyExists(false)}>
+            {alreadyExists && (
+              <div className="flex items-center">
+                <BiError size={18} className="text-red-500 mr-1" />
+                <p className="text-red-500 m-0 font-semibold">
+                  An account already exists with this email
+                </p>
+              </div>
+            )}
             <div className="">
               <Input
                 label="Username"

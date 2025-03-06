@@ -12,7 +12,6 @@ import {
 } from "react-share";
 import {
   FaFacebook,
-  FaTwitter,
   FaWhatsapp,
   FaTelegramPlane,
   FaReddit,
@@ -25,6 +24,7 @@ import {
   FaChevronRight,
   FaShareAlt,
 } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 
 function ShareModal({ url, title, onCLose }) {
   const [copied, setCopied] = useState(false);
@@ -78,7 +78,9 @@ function ShareModal({ url, title, onCLose }) {
           isMobile ? { y: "100%", opacity: 0 } : { scale: 0.95, opacity: 0 }
         }
         animate={isMobile ? { y: "0%", opacity: 1 } : { scale: 1, opacity: 1 }}
-        exit={isMobile ? { y: "0%", opacity: 0 } : { scale: 0.95, opacity: 0 }}
+        exit={
+          isMobile ? { y: "100%", opacity: 0 } : { scale: 0.95, opacity: 0 }
+        }
         transition={{ type: "tween", duration: 0.2, ease: "easeInOut" }}
         className={`bg-white max-w-md p-6 w-full shadow-lg ${
           isMobile ? "fixed  bottom-0 rounded-t-lg" : "rounded-lg "
@@ -120,9 +122,9 @@ function ShareModal({ url, title, onCLose }) {
             </FacebookShareButton>
 
             <TwitterShareButton url={url} title={title}>
-              <FaTwitter
+              <FaXTwitter
                 size={40}
-                className="text-blue-400 duration-100 hover:scale-125"
+                className="text-black duration-100 hover:scale-125"
               />
             </TwitterShareButton>
 

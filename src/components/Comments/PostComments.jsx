@@ -105,7 +105,9 @@ export default function PostComments({
         animate={
           isMobile ? { y: "0%", opacity: 1 } : { height: "100%", opacity: 1 }
         }
-        exit={isMobile ? { y: "0%", opacity: 0 } : { height: "0%", opacity: 0 }}
+        exit={
+          isMobile ? { y: "100%", opacity: 0 } : { height: "0%", opacity: 0 }
+        }
         transition={{ type: "tween", duration: 0.2, ease: "easeInOut" }}
         className="w-full"
       >

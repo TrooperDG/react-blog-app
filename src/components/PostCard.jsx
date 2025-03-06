@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import databaseService from "../appwrite/database";
+import { AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import {
   FaRegHeart,
@@ -143,7 +144,7 @@ function PostCard({
                 alt="Blog"
                 className={` ${
                   isView
-                    ? " max-h-[50vh] object-contain "
+                    ? " max-h-120  object-contain "
                     : "object-cover max-h-90 md: md:max-h-120 w-full "
                 } rounded-lg `}
               />
@@ -203,27 +204,29 @@ function PostCard({
         {isView && (
           <div className="browser-css text-lg mt-3">{parse(content)}</div>
         )}
-
-        {!isView && isCommentOpen && (
-          <PostComments
-            handleCloseComment={() => setIsCommentOpen(false)}
-            fixedPosition={true}
-            currentPostId={$id}
-            handleCommentCount={(count) => setCommentCount(count)}
-          />
-        )}
-
-        {isShare && (
-          <ShareModal
-            url={
-              isView
-                ? window.location.href
-                : window.location.href + "post/" + $id
-            }
-            title={title}
-            onCLose={() => setIsShare(false)}
-          />
-        )}
+        <AnimatePresence>
+          {!isView && isCommentOpen && (
+            <PostComments
+              handleCloseComment={() => setIsCommentOpen(false)}
+              fixedPosition={true}
+              currentPostId={$id}
+              handleCommentCount={(count) => setCommentCount(count)}
+            />
+          )}
+        </AnimatePresence>
+        <AnimatePresence>
+          {isShare && (
+            <ShareModal
+              url={
+                isView
+                  ? window.location.href
+                  : window.location.href + "post/" + $id
+              }
+              title={title}
+              onCLose={() => setIsShare(false)}
+            />
+          )}
+        </AnimatePresence>
       </div>
     </>
   );

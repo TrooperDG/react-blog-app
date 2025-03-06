@@ -27,6 +27,7 @@ export class AuthService {
         return userAccount;
       }
     } catch (error) {
+      if (error.code === 409) return error.code;
       console.log("Appwrite service :: createAccount :: error ", error);
     }
   }
