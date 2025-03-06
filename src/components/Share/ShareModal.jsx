@@ -78,9 +78,7 @@ function ShareModal({ url, title, onCLose }) {
           isMobile ? { y: "100%", opacity: 0 } : { scale: 0.95, opacity: 0 }
         }
         animate={isMobile ? { y: "0%", opacity: 1 } : { scale: 1, opacity: 1 }}
-        exit={
-          isMobile ? { y: "100%", opacity: 0 } : { scale: 0.95, opacity: 0 }
-        }
+        exit={isMobile ? { y: "0%", opacity: 0 } : { scale: 0.95, opacity: 0 }}
         transition={{ type: "tween", duration: 0.2, ease: "easeInOut" }}
         className={`bg-white max-w-md p-6 w-full shadow-lg ${
           isMobile ? "fixed  bottom-0 rounded-t-lg" : "rounded-lg "
