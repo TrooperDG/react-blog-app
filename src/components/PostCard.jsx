@@ -8,6 +8,7 @@ import {
   FaComment,
   FaRegComment,
   FaShare,
+  FaExternalLinkAlt,
 } from "react-icons/fa";
 import parse from "html-react-parser";
 import { useSelector, useDispatch } from "react-redux";
@@ -134,8 +135,18 @@ function PostCard({
           <span className="text-gray-700 font-semibold truncate">
             {creatorData && creatorData.username}
           </span>
+          <div className="ml-auto">
+            {!isView && (
+              <button
+                onClick={() => navigate(`/post/${$id}`)}
+                className="pl-2 py-2"
+              >
+                <FaExternalLinkAlt className="text-gray-500" />
+              </button>
+            )}
+          </div>
         </div>
-        {/* Image */}
+        {/*Featured Image */}
         <Link to={`/post/${$id}`}>
           <div className={`w-full flex justify-center mb-3  `}>
             {featuredImage ? (

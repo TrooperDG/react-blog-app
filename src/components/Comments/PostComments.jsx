@@ -167,7 +167,8 @@ export default function PostComments({
                   .map((comment) => (
                     <li
                       key={comment.$id}
-                      className="flex gap-2 items-center mt-4 mb-1 w-full "
+                      className="flex gap-2 items-center mt-4 mb-1 w-full overflow-x-hidden"
+                      // {overflow-hidden for the animation of the edit-delete Buttons}
                     >
                       <Comment
                         comment={comment}

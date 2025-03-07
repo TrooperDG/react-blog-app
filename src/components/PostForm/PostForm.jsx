@@ -97,13 +97,17 @@ function PostForm({ post }) {
       onSubmit={handleSubmit(submit)}
       className="flex flex-wrap justify-center w-full px-2  "
     >
-      <div className="w-full flex justify-end mb-2 gap-2">
+      <div className="w-full flex justify-end mb-3 gap-2 ">
         <Link to="/my-posts">
-          <Button bgColor="bg-amber-600">Cancel</Button>
+          <button className="duration-100 px-2 rounded-full hover:underline hover:bg-gray-200 text-gray-600">
+            Cancel
+          </button>
         </Link>
         {post && (
           <Link onClick={deletePost} to="/my-posts">
-            <Button bgColor="bg-red-500">Delete</Button>
+            <button className="duration-100 px-2 rounded-full hover:underline hover:bg-red-200 text-red-500">
+              Delete
+            </button>
           </Link>
         )}
       </div>
