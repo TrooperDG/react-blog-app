@@ -212,9 +212,7 @@ function PostCard({
             <FaShare /> <span>Share</span>
           </button>
         </div>
-        {isView && (
-          <div className="browser-css text-lg mt-3">{parse(content)}</div>
-        )}
+        {isView && <div className="browser-css  mt-3">{parse(content)}</div>}
         <AnimatePresence>
           {!isView && isCommentOpen && (
             <PostComments
