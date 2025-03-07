@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import authService from "../appwrite/auth";
 import { useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
-import { Button, Input, Logo } from "./index";
+import { Button, Input, Logo, Loading } from "./index";
 import { useForm } from "react-hook-form";
 import { login as storeLogin } from "../store/authSlice";
 import { addUserDetails } from "../store/userSlice.js";
@@ -12,6 +12,7 @@ import databaseService from "../appwrite/database.js";
 
 function Signup() {
   const [serverError, setServerError] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [alreadyExists, setAlreadyExists] = useState(false);
   const {
@@ -25,6 +26,7 @@ function Signup() {
   const navigate = useNavigate();
 
   async function serverSignup(data) {
+    setIsSubmitting(true);
     delete data.confirmPassword;
     try {
       const createdUser = await authService.createAccount(data);
@@ -49,6 +51,7 @@ function Signup() {
     } catch (error) {
       console.log(error);
     }
+    setIsSubmitting(false);
   }
   function handleRetry() {
     setServerError("");
@@ -130,7 +133,7 @@ function Signup() {
                 {...register("email", {
                   required: "Email can not be empty",
                   pattern: {
-                    value: /^\S+@\S+$/,
+                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
                     message: "Invalid email format",
                   },
                 })}
@@ -211,9 +214,10 @@ function Signup() {
               )}
             </div>
             <Button type="submit" className="w-full">
-              Sign Up
+              {isSubmitting ? "Signing up..." : "Sign up"}
             </Button>
           </div>
+          {isSubmitting ? <Loading /> : null}
         </form>
       </div>
     </div>

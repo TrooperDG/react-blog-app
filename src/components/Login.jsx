@@ -4,17 +4,19 @@ import { login as storeLogin } from "../store/authSlice";
 import { addUserDetails } from "../store/userSlice.js";
 import authService from "../appwrite/auth";
 import { useDispatch } from "react-redux";
-import { Logo, Input, Button } from "./index";
+import { Logo, Input, Button, Loading } from "./index";
 import { useForm } from "react-hook-form";
 import databaseService from "../appwrite/database.js";
 
 function Login() {
   const [error, setError] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   async function serverLogin(data) {
+    setIsSubmitting(true);
     setError("");
     try {
       const session = await authService.login(data);
@@ -43,6 +45,7 @@ function Login() {
     } catch (error) {
       console.log(error);
     }
+    setIsSubmitting(false);
   }
   return (
     <div className="flex items-center justify-center w-full">
@@ -101,9 +104,10 @@ function Login() {
             </div>
 
             <Button type="submit" className="w-full">
-              Sign in
+              {isSubmitting ? "Signing in..." : "Sign in"}
             </Button>
           </div>
+          {isSubmitting ? <Loading /> : null}
         </form>
       </div>
     </div>
