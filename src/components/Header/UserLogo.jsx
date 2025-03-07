@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import LogoutBtn from "./LogoutBtn";
 import databaseService from "../../appwrite/database";
 import { motion, AnimatePresence } from "framer-motion";
@@ -183,14 +183,26 @@ function UserLogo() {
           {accountItems.map((item) =>
             item.active ? (
               <li
-                onClick={() => {
-                  setIsOpen(false);
-                  navigate(item.path);
-                }}
+                // onClick={() => {
+                //   setIsOpen(false);
+                //   navigate(item.path);
+                // }}
                 key={item.name}
-                className=" duration-200 border-b-2 border-slate-800 hover:bg-slate-700 hover:border-gray-400   hover:pl-0.5  text-white active:bg-blue-200 "
+                // className=" duration-200 border-b-2 border-slate-800 hover:bg-slate-700 hover:border-gray-400   hover:pl-0.5  text-white active:bg-blue-200 "
               >
-                <button className=" text-lg px-6 py-2 ">{item.name}</button>
+                <NavLink
+                  to={item.path}
+                  onClick={() => setIsOpen(false)}
+                  className={({ isActive }) =>
+                    ` inline-block w-full duration-200 border-b-2  hover:bg-slate-700  hover:border-gray-400 hover:pl-0.5  text-white active:bg-blue-200 ${
+                      isActive
+                        ? "border-gray-400 bg-slate-700  "
+                        : "border-slate-800"
+                    } `
+                  }
+                >
+                  <button className=" text-lg px-6 py-2 ">{item.name}</button>
+                </NavLink>
               </li>
             ) : null
           )}

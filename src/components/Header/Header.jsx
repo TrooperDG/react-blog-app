@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { Container, Logo, LogoutBtn, UserLogo } from "../index";
 import { useSelector } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, NavLink } from "react-router-dom";
 import Sidebar from "./Sidebar";
 
 function Header() {
@@ -65,12 +65,18 @@ function Header() {
             {navItems.map((item) =>
               item.active ? (
                 <li key={item.name}>
-                  <button
-                    onClick={() => navigate(item.path)}
-                    className="inline-block px-6 py-2 duration-200 hover:bg-blue-200  hover:text-gray-800 rounded-full text-white active:bg-blue-200"
+                  <NavLink
+                    to={item.path}
+                    className={({ isActive }) =>
+                      `${
+                        isActive
+                          ? "text-blue-300 underline underline-offset-4"
+                          : "text-white"
+                      } inline-block px-6 py-2 duration-200 hover:bg-blue-200  hover:text-gray-800 rounded-full  active:bg-blue-200`
+                    }
                   >
                     {item.name}
-                  </button>
+                  </NavLink>
                 </li>
               ) : null
             )}

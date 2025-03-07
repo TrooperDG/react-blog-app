@@ -1,10 +1,7 @@
 import React, { useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 function Sidebar({ navItems = [], navRef }) {
-  // const navRef = useRef(null);
-  const navigate = useNavigate();
-
   function handleCloseSidebar() {
     navRef.current.style.left = "-12.5rem";
   }
@@ -46,14 +43,26 @@ function Sidebar({ navItems = [], navRef }) {
       {navItems.map((item) =>
         item.active ? (
           <li
-            onClick={() => {
-              handleCloseSidebar();
-              navigate(item.path);
-            }}
+            // onClick={() => {
+            //   handleCloseSidebar();
+            //   navigate(item.path);
+            // }}
             key={item.name}
-            className=" duration-200 border-b-2 border-slate-800 hover:bg-slate-700  hover:border-gray-400 hover:pl-0.5  text-white active:bg-blue-200"
+            // className=" duration-200 border-b-2 border-slate-800 hover:bg-slate-700  hover:border-gray-400 hover:pl-0.5  text-white active:bg-blue-200"
           >
-            <button className=" text-lg px-6 py-2 ">{item.name}</button>
+            <NavLink
+              to={item.path}
+              onClick={handleCloseSidebar}
+              className={({ isActive }) =>
+                ` inline-block w-full duration-200 border-b-2  hover:bg-slate-700  hover:border-gray-400 hover:pl-0.5  text-white active:bg-blue-200 ${
+                  isActive
+                    ? "border-gray-400 bg-slate-700  "
+                    : "border-slate-800"
+                } `
+              }
+            >
+              <button className=" text-lg px-6 py-2 ">{item.name}</button>
+            </NavLink>
           </li>
         ) : null
       )}
