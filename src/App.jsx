@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import authService from "./appwrite/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { login, logout } from "./store/authSlice";
-import { Footer, Header, Loading } from "./components";
+import { Footer, Header, Loading, ScrollToTop } from "./components";
 import { Outlet } from "react-router-dom";
 import { addUserDetails, removeUserDetails } from "./store/userSlice";
 import databaseService from "./appwrite/database";
@@ -55,6 +55,7 @@ function App() {
 
   return (
     <>
+      <ScrollToTop />
       <Header />
       <main className="mt-16 bg-orange-50">
         <Outlet />
