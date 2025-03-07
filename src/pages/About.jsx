@@ -30,7 +30,7 @@ function AboutPage() {
             </h2>
             <div className="flex items-center space-x-4">
               <img
-                src="/images/user.svg" // Replace with your image URL
+                src="/images/author.jpg" // Replace with your image URL
                 alt="Author"
                 className="w-24 h-24 rounded-full object-cover"
               />
