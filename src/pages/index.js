@@ -8,6 +8,8 @@ import SignupPage from "./SignupPage";
 import NotFound from "./NotFound";
 import MyAccountPage from "./MyAccountPage";
 import EditAccount from "./EditAccount";
+import AboutPage from "./About";
+import ContactPage from "./ContactPage";
 
 export {
   Home,
@@ -20,4 +22,6 @@ export {
   NotFound,
   MyAccountPage,
   EditAccount,
+  AboutPage,
+  ContactPage,
 };

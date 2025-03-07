@@ -21,6 +21,8 @@ import {
   NotFound,
   MyAccountPage,
   EditAccount,
+  AboutPage,
+  ContactPage,
 } from "./pages";
 import AddPost from "./pages/AddPost.jsx";
 // import UserForm from "./components/user-account/userForm.jsx";
@@ -30,6 +32,8 @@ const router = createBrowserRouter(
     <>
       <Route path="/" element={<App />}>
         <Route path="" element={<Home />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/contact" element={<ContactPage />} />
         <Route
           path="/login"
           element={
