@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import databaseService from "../appwrite/database";
-import { Container, Loading, PostCard } from "../components";
+import { Button, Container, Loading, PostCard } from "../components";
 import { useSelector } from "react-redux";
 import { Query } from "appwrite";
 import { Link } from "react-router-dom";
@@ -25,7 +25,14 @@ function MyPosts() {
   }
   if (allPosts.length === 0) {
     return (
-      <h1 className="text-5xl">You dont have any posts yet "create post" </h1>
+      <Container>
+        <div className="flex flex-col gap-4 justify-center items-center h-[60vh]">
+          <h1 className="text-2xl ">You don't have any post yet</h1>
+          <Link to={"/add-post"}>
+            <Button bgColor="bg-orange-600">Create one</Button>
+          </Link>
+        </div>
+      </Container>
     );
   }
   return (

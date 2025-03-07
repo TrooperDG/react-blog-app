@@ -10,7 +10,6 @@ import MyAccountPage from "./MyAccountPage";
 import EditAccount from "./EditAccount";
 import AboutPage from "./About";
 import ContactPage from "./ContactPage";
-import ScrollToTop from "../components/ScrollToTop";
 
 export {
   Home,
@@ -25,5 +24,4 @@ export {
   EditAccount,
   AboutPage,
   ContactPage,
-  ScrollToTop,
 };

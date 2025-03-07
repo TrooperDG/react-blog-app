@@ -18,7 +18,7 @@ import UserAccount from "./user-account/UserAccount";
 import UserForm from "./user-account/UserForm";
 import PostComments from "./Comments/PostComments";
 import ShareModal from "./Share/ShareModal";
-
+import ScrollToTop from "../components/ScrollToTop";
 export {
   Header,
   Footer,
@@ -40,4 +40,5 @@ export {
   UserForm,
   PostComments,
   ShareModal,
+  ScrollToTop,
 };

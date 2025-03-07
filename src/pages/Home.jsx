@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import databaseService from "../appwrite/database";
-import { Container, Loading, PostCard } from "../components";
+import { Button, Container, Loading, PostCard } from "../components";
 import { Link } from "react-router-dom";
 
 function Home() {
@@ -31,7 +31,16 @@ function Home() {
     return <Loading />;
   }
   if (allPosts.length === 0) {
-    return <h1 className="text-5xl">No post available</h1>;
+    return (
+      <Container>
+        <div className="flex flex-col gap-4 justify-center items-center h-[60vh]">
+          <h1 className="text-2xl ">Sorry no posts available</h1>
+          <Link to={"/add-post"}>
+            <Button bgColor="bg-orange-600">Create yours</Button>
+          </Link>
+        </div>
+      </Container>
+    );
   }
 
   return (
