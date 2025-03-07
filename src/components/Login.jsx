@@ -103,7 +103,11 @@ function Login() {
               )}
             </div>
 
-            <Button type="submit" className="w-full">
+            <Button
+              type="submit"
+              bgColor={isSubmitting ? "bg-blue-800" : "bg-blue-600"}
+              className="w-full"
+            >
               {isSubmitting ? "Signing in..." : "Sign in"}
             </Button>
           </div>
