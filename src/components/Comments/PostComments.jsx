@@ -128,29 +128,31 @@ export default function PostComments({
           >
             Close
           </button>
-          <form onSubmit={handleSubmit(submit)}>
-            <div className=" flex items-end ">
-              <textarea
-                type="text"
-                placeholder="Add a comment"
-                className=" py-2  border-b-2 border-gray-300 focus:border-gray-400 duration-100 outline-none w-full resize-none "
-                {...register("comment", { required: true })}
-                style={{ fieldSizing: "content" }}
-              ></textarea>
-              <button className="ml-2 mb-1 outline-gray-300" type="submit">
-                <svg
-                  className="w-7 h-7 "
-                  xmlns="http://www.w3.org/2000/svg"
-                  height="24px"
-                  viewBox="0 -960 960 960"
-                  width="24px"
-                  fill="#6a7282"
-                >
-                  <path d="M120-160v-640l760 320-760 320Zm80-120 474-200-474-200v140l240 60-240 60v140Zm0 0v-400 400Z" />
-                </svg>
-              </button>
-            </div>
-          </form>
+          {userDetails && (
+            <form onSubmit={handleSubmit(submit)}>
+              <div className=" flex items-end ">
+                <textarea
+                  type="text"
+                  placeholder="Add a comment"
+                  className=" py-2  border-b-2 border-gray-300 focus:border-gray-400 duration-100 outline-none w-full resize-none "
+                  {...register("comment", { required: true })}
+                  style={{ fieldSizing: "content" }}
+                ></textarea>
+                <button className="ml-2 mb-1 outline-gray-300" type="submit">
+                  <svg
+                    className="w-7 h-7 "
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24px"
+                    viewBox="0 -960 960 960"
+                    width="24px"
+                    fill="#6a7282"
+                  >
+                    <path d="M120-160v-640l760 320-760 320Zm80-120 474-200-474-200v140l240 60-240 60v140Zm0 0v-400 400Z" />
+                  </svg>
+                </button>
+              </div>
+            </form>
+          )}
           <div>
             <ul
               className={`mt-1.5 scrollable-content overflow-auto bg-white    ${
