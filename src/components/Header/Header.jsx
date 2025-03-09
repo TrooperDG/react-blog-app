@@ -55,8 +55,14 @@ function Header() {
           </div>
 
           <div className="mr-4  ">
-            <Link to="/">
+            <Link to="/" className="flex items-center">
               <Logo width="w-8" />
+              <p className="ml-2  font-semibold text-2xl">
+                <span className="text-white">B</span>
+                <span className="text-white">log</span>
+                <span className="text-orange-500">S</span>
+                <span className="text-orange-500">tore</span>
+              </p>
             </Link>
           </div>
 
