@@ -38,10 +38,10 @@ function Header() {
     <header className="py-3 shadow-black/30 shadow-lg fixed top-0 left-0 right-0 z-50 bg-slate-800 ">
       <Container>
         <nav className="flex mx-4 items-center">
-          <div className="mr-2.5 w-10 md:hidden  pl-0">
+          <div className="mr-2.5  md:hidden  flex items-center">
             <button
               onClick={() => (navRef.current.style.left = "0px")}
-              className="text-white active:bg-slate-600"
+              className="text-white active:bg-slate-600  "
             >
               <svg
                 className="w-8 h-8"
@@ -57,7 +57,7 @@ function Header() {
           <div className="mr-4  ">
             <Link to="/" className="flex items-center">
               <Logo width="w-8" />
-              <p className="ml-2  font-semibold text-2xl">
+              <p className="ml-2  font-semibold text-lg">
                 <span className="text-white">B</span>
                 <span className="text-white">log</span>
                 <span className="text-orange-500">S</span>
