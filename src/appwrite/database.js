@@ -242,10 +242,7 @@ export class DatabaseService {
 
   getFilePreview(fileId) {
     try {
-      const result = this.bucket.getFilePreview(
-        config.appwriteBucketId,
-        fileId
-      );
+      const result = this.bucket.getFileView(config.appwriteBucketId, fileId);
       return result;
     } catch (error) {
       console.log("Appwrite service :: deleteFile :: error ", error);
